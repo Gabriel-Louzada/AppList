@@ -9,7 +9,8 @@ class Produtodao {
   static const String quantidade = 'quantidade';
   static const String pego = 'pego';
 
-//O PEGO IGUAL A FALSE QUER DIZER QUE O PRODUTO AINDA NÃO FOI PEGO
+//O PEGO IGUAL A 0 É O MESMO QUE FALSE IGUAL A 1 É O MESMO QUE VERDADEIRO
+// ENTENDO QUE FALSE (0) O PRODUTO AINDA NÃO FOI PEGO
 
   static const String create = '''
   CREATE TABLE IF NOT EXISTS $nomeTabela(
@@ -17,14 +18,14 @@ class Produtodao {
   $nome       TEXT NOT NULL,
   $valor      REAL,
   $quantidade REAL,
-  $pego       TEXT)
+  $pego       INTEGER) 
  ''';
 
 //METODO PARA INSERIR OS DADOS
   Future<int> inserirProduto(ProdutoModel produto) async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego) VALUES (?,?,?,"false")
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego) VALUES (?,?,?,0)
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert, [
       capitalize(produto.nome),
@@ -38,7 +39,7 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela ORDER BY $nome''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela WHERE $pego = 0 ORDER BY $nome''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
@@ -50,7 +51,7 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutosPegos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela ORDER BY $nome WHERE $pego = "true" ''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela WHERE $pego = 1  ORDER BY $nome ''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();

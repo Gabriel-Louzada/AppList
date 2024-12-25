@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/dao/ProdutoDao.dart';
+import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:listfy/screen/alterarProduto.dart';
+import 'package:provider/provider.dart';
 
 // AQUI EU TENHO UMA CLASSE PRODUTO OU SEJA UM CARD
 enum SampleItem { itemUm, itemDois }
@@ -124,7 +126,8 @@ class _ProdutoState extends State<Produto> {
                             value: SampleItem.itemUm,
                             child: const Text('Remover'),
                             onTap: () async {
-                              await Produtodao()
+                              await Provider.of<ProdutoProvider>(context,
+                                      listen: false)
                                   .removerProduto(widget.produto.id!);
                             },
                           ),

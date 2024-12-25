@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:listfy/dao/ProdutoDao.dart';
-//import 'package:listfy/data/produto_inherited.dart';
+import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
+import 'package:provider/provider.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key, required this.produtoContext});
-//Aqui eu entendi que eu estou criando um context e tornando ele de certa forma obrigatório
 
   final BuildContext produtoContext;
 
@@ -29,11 +28,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    //meusProdutos = Provider.of<ProdutoProvider>(context);
-    //final valorTotal = ProdutoInherited.of(context).somaValores();
-    //final quantidadeTotal = ProdutoInherited.of(context).somaQuantidades();
+  void dispose() {
+    _nomeController.dispose();
+    _valorController.dispose();
+    _quantidadeController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -101,7 +104,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 height: 25,
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
                       final nome = _nomeController.text.trim();
@@ -113,15 +116,20 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           valor: double.parse(valor),
                           quantidade: double.parse(quantidade));
 
-                      print(produto);
-
-                      Produtodao().inserirProduto(produto);
+                      await Provider.of<ProdutoProvider>(context, listen: false)
+                          .adicionarProduto(produto);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Adicionando um produto a lista '),
+                          content:
+                              Text('Produto adicionado a lista com sucesso ! '),
                         ),
                       );
+
+                      //LIMPANDO OS CAMPOS
+                      _nomeController.clear();
+                      _valorController.clear();
+                      _quantidadeController.clear();
                     }
                   },
                   child: const Text(

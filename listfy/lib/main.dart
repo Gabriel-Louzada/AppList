@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/primeiraTela.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   //Nunca esqueça de que o Inherited deve ser o primeiro item da árvore de widget
@@ -11,10 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Listfy',
-      theme: ThemeData(useMaterial3: true, primarySwatch: Colors.amber),
-      home: const PrimeiraTela(),
+    return ChangeNotifierProvider(
+      create: (context) => ProdutoProvider(),
+      child: MaterialApp(
+        title: 'Listfy',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+          useMaterial3: true,
+        ),
+        home: const PrimeiraTela(),
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ class ProdutoModel {
   final String nome;
   final double valor;
   final double quantidade;
-  final String? pego;
+  final int? pego;
 
   ProdutoModel(
       {this.id,

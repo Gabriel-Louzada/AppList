@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:listfy/dao/ProdutoDao.dart';
+import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
+import 'package:provider/provider.dart';
 
 class AlterarProduto extends StatefulWidget {
   const AlterarProduto(
@@ -118,7 +119,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                 height: 25,
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
                       final id = widget.produto.id;
@@ -132,13 +133,12 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                           valor: double.parse(valor),
                           quantidade: double.parse(quantidade));
 
-                      print(produto);
-
-                      Produtodao().alterarProduto(produto);
+                      await Provider.of<ProdutoProvider>(context, listen: false)
+                          .alterarProduto(produto);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Alterando o produto '),
+                          content: Text('Produto Alterado com sucesso !'),
                         ),
                       );
                       Navigator.pop(context);
