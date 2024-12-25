@@ -13,11 +13,15 @@ class ProdutoProvider extends ChangeNotifier {
   //CARREGAR TODOS OS PRODUTOS
   Future<void> carregarProdutos() async {
     _produtos = await Produtodao().listarTodosProdutos();
+    print("Produtos sem pegar");
+    print(_produtos);
     notifyListeners();
   }
 
   Future<void> carregarProdutosPegos() async {
     _produtosPegos = await Produtodao().listarTodosProdutosPegos();
+    print("Produtos pegos");
+    print(_produtosPegos);
     notifyListeners();
   }
 
@@ -35,6 +39,13 @@ class ProdutoProvider extends ChangeNotifier {
 //Posso pegar os dois tipos de produtos
   Future<void> pegarProduto(ProdutoModel produto) async {
     await Produtodao().pegarProduto(produto);
+    carregarProdutos();
+    carregarProdutosPegos();
+  }
+
+//Posso pegar os dois tipos de produtos
+  Future<void> voltarCarrinho(ProdutoModel produto) async {
+    await Produtodao().voltarCarrinho(produto);
     carregarProdutos();
     carregarProdutosPegos();
   }

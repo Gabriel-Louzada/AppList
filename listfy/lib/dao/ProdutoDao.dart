@@ -55,6 +55,7 @@ class Produtodao {
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
+    print("Produto pegos dentro do dao");
     print(produtos);
     return produtos;
   }
@@ -83,10 +84,23 @@ class Produtodao {
     print(produto);
     const sqlUpdate = '''
       UPDATE $nomeTabela 
-         SET $pego = ?
+         SET $pego = 1
        WHERE $id = ?''';
     final retorno = await db.rawUpdate(sqlUpdate, [
-      produto.pego,
+      produto.id,
+    ]);
+    print(produto);
+    return retorno;
+  }
+
+  Future<int> voltarCarrinho(ProdutoModel produto) async {
+    final db = await getDataBase();
+    print(produto);
+    const sqlUpdate = '''
+      UPDATE $nomeTabela 
+         SET $pego = 0
+       WHERE $id = ?''';
+    final retorno = await db.rawUpdate(sqlUpdate, [
       produto.id,
     ]);
     print(produto);

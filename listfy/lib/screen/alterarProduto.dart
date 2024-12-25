@@ -71,6 +71,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
               ),
               TextFormField(
                 controller: _nomeController,
+                maxLength: 5,
                 validator: (String? value) {
                   if (validar(value)) {
                     return "Insira o nome do produto";
@@ -87,6 +88,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
+                maxLength: 5,
                 controller: _valorController,
                 validator: (String? value) {
                   if (validar(value)) {
@@ -104,6 +106,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
+                maxLength: 5,
                 controller: _quantidadeController,
                 validator: (String? value) {
                   if (validar(value)) {

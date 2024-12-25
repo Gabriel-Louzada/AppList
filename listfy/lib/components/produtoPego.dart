@@ -7,19 +7,19 @@ import 'package:provider/provider.dart';
 // AQUI EU TENHO UMA CLASSE PRODUTO OU SEJA UM CARD
 enum SampleItem { itemUm, itemDois }
 
-class Produto extends StatefulWidget {
+class ProdutoPego extends StatefulWidget {
 // criando parametros para essa classe
 
   final ProdutoModel produto;
 
 // coloco essas variaveis no metodo construtor ?
-  const Produto({required this.produto, super.key});
+  const ProdutoPego({required this.produto, super.key});
 
   @override
-  State<Produto> createState() => _ProdutoState();
+  State<ProdutoPego> createState() => _ProdutoState();
 }
 
-class _ProdutoState extends State<Produto> {
+class _ProdutoState extends State<ProdutoPego> {
   SampleItem? selectedItem;
 
   @override
@@ -90,9 +90,9 @@ class _ProdutoState extends State<Produto> {
                             );
                             await Provider.of<ProdutoProvider>(context,
                                     listen: false)
-                                .pegarProduto(produto);
+                                .voltarCarrinho(produto);
                           },
-                          icon: const Icon(Icons.add_shopping_cart)),
+                          icon: const Icon(Icons.remove_shopping_cart)),
                       PopupMenuButton<SampleItem>(
                         initialValue: selectedItem,
                         onSelected: (SampleItem item) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:listfy/screen/primeiraTela.dart';
+import 'package:listfy/screen/produtosPegos.dart';
 
 class MeuDrawer extends StatelessWidget {
   const MeuDrawer({super.key});
@@ -36,18 +38,22 @@ class MeuDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: const Text('Página inicial'),
+            title: const Text('Lista de Compras'),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.pushNamed(context, '/home');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (contextNew) => const PrimeiraTela()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.shopping_cart_outlined),
             title: const Text('Carrinho'),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.pushNamed(context, '/settings');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (contextNew) => const TelaDeProdutosPegos()));
             },
           ),
           ListTile(

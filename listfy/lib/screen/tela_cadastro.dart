@@ -56,6 +56,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ),
               TextFormField(
                 controller: _nomeController,
+                maxLength: 35,
                 validator: (String? value) {
                   if (validar(value)) {
                     return "Insira o nome do produto";
@@ -72,6 +73,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
+                maxLength: 5,
                 controller: _valorController,
                 validator: (String? value) {
                   if (validar(value)) {
@@ -89,6 +91,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
+                maxLength: 5,
                 controller: _quantidadeController,
                 validator: (String? value) {
                   if (validar(value)) {
