@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/screen/primeiraTela.dart';
 import 'package:listfy/screen/produtosPegos.dart';
+import 'package:listfy/screen/somadores.dart';
 
 class MeuDrawer extends StatelessWidget {
   const MeuDrawer({super.key});
@@ -60,8 +61,10 @@ class MeuDrawer extends StatelessWidget {
             leading: const Icon(Icons.monetization_on),
             title: const Text('Totalizadores'),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.pushNamed(context, '/settings');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (contextNew) => const Somadores()));
             },
           ),
           ListTile(

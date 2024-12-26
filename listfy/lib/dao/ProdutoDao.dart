@@ -35,6 +35,40 @@ class Produtodao {
     return resultado;
   }
 
+  Future<int> inserirProdutoPadrao() async {
+    final db = await getDataBase(); //ABRIR O BANCO DE DADOS
+    const sqlInsert = '''
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego) VALUES
+('Arroz', 1.00, 1, 0),
+('Feijão', 1.00, 1, 0),
+('Macarrão', 1.00, 1, 0),
+('Óleo de Soja', 1.00, 1, 0),
+('Açúcar', 1.00, 1, 0),
+('Café', 1.00, 1, 0),
+('Leite', 1.00, 6, 0),
+('Farinha de Trigo', 1.00, 1, 0),
+('Sal', 1.00, 1, 0),
+('Carne Bovina', 1.00, 2, 0),
+('Frango', 1.00, 2, 0),
+('Ovos', 1.00, 12, 0),
+('Batata', 1.00, 3, 0),
+('Tomate', 1.00, 3, 0),
+('Cebola', 1.00, 2, 0),
+('Alho', 1.00, 1, 0),
+('Banana', 1.00, 6, 0),
+('Maçã', 1.00, 4, 0),
+('Sabonete', 1.00, 3, 0),
+('Detergente', 1.00, 1, 0),
+('Papel Higiênico', 1.00, 12, 0),
+('Creme Dental', 1.00, 1, 0),
+('Shampoo', 1.00, 1, 0),
+('Condicionador', 1.00, 1, 0),
+('Desinfetante', 1.00, 1, 0);
+     '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
+    final resultado = await db.rawInsert(sqlInsert);
+    return resultado;
+  }
+
   //METODO PARA LISTAR TODOS OS DADOS
   Future<List<ProdutoModel>> listarTodosProdutos() async {
     final db = await getDataBase(); // abrindo o banco de dados

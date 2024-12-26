@@ -36,6 +36,16 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
           "Lista de Compras",
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Provider.of<ProdutoProvider>(context, listen: false)
+                  .adicionarProdutopadrao();
+            },
+            icon: const Icon(Icons.library_add),
+            color: Colors.white,
+          )
+        ],
       ),
       drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(builder: (context, provider, child) {

@@ -30,6 +30,12 @@ class ProdutoProvider extends ChangeNotifier {
     carregarProdutos();
   }
 
+  // ADICIONA PRODUTO PADRÃO
+  Future<void> adicionarProdutopadrao() async {
+    await Produtodao().inserirProdutoPadrao();
+    carregarProdutos();
+  }
+
   Future<void> alterarProduto(ProdutoModel produto) async {
     await Produtodao().alterarProduto(produto);
     carregarProdutos();
@@ -55,5 +61,21 @@ class ProdutoProvider extends ChangeNotifier {
     await Produtodao().removerProduto(id);
     carregarProdutos();
     carregarProdutosPegos();
+  }
+
+  double somarQuantidade() {
+    double quantidadeTotal = 0;
+    for (var produto in produtos) {
+      quantidadeTotal += produto.quantidade;
+    }
+    return quantidadeTotal;
+  }
+
+  double somarValores() {
+    double valorTotal = 0;
+    for (var produto in _produtos) {
+      valorTotal += (produto.valor * produto.quantidade);
+    }
+    return valorTotal;
   }
 }
