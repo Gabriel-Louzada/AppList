@@ -35,7 +35,7 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Carrinho",
-          style: TextStyle(color: Colors.white, fontSize: 30),
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
       drawer: const MeuDrawer(),

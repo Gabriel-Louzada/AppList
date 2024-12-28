@@ -34,29 +34,25 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Lista de Compras",
-          style: TextStyle(color: Colors.white, fontSize: 30),
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await Provider.of<ProdutoProvider>(context, listen: false)
-                  .adicionarProdutopadrao();
-            },
-            icon: const Icon(Icons.library_add),
-            color: Colors.white,
-          )
-        ],
       ),
       drawer: const MeuDrawer(),
-      body: Consumer<ProdutoProvider>(builder: (context, provider, child) {
-        return ListView.builder(
-          itemCount: provider.produtos.length,
-          itemBuilder: (context, index) {
-            final produtoProvider = provider.produtos[index];
-            return Produto(produto: produtoProvider);
-          },
-        );
-      }),
+      body: Consumer<ProdutoProvider>(
+        builder: (context, provider, child) {
+          return ListView.builder(
+            itemCount: provider.produtos.length + 1,
+            itemBuilder: (context, index) {
+              if (index == provider.produtos.length) {
+                return const SizedBox(height: 80);
+              } else {
+                final produtoProvider = provider.produtos[index];
+                return Produto(produto: produtoProvider);
+              }
+            },
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

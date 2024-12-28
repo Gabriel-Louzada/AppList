@@ -40,108 +40,114 @@ class _TelaCadastroState extends State<TelaCadastro> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: const Text("Cadastro de produtos",
-            style: TextStyle(color: Colors.white, fontSize: 30)),
+        title: const Text("ListFy",
+            style: TextStyle(color: Colors.white, fontSize: 20)),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Text("Adicionar Produtos a lista",
-                  style: TextStyle(fontSize: 25)),
-              const SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                controller: _nomeController,
-                maxLength: 35,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira o nome do produto";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Nome do produto:"),
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 5,
-                controller: _valorController,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira o valor estimado do produto";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Valor do produto:"),
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 5,
-                controller: _quantidadeController,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira a quantidade desejada";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Quantidade:"), border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
-                      final nome = _nomeController.text.trim();
-                      final valor = _valorController.text.trim();
-                      final quantidade = _quantidadeController.text.trim();
+      body: ListView(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const Text("Adicionar Produto a lista",
+                      style: TextStyle(fontSize: 18)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    controller: _nomeController,
+                    maxLength: 30,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira o nome do produto";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Nome do produto:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 5,
+                    controller: _valorController,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira o valor estimado do produto";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Valor do produto:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 5,
+                    controller: _quantidadeController,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira a quantidade desejada";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Quantidade:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
+                          final nome = _nomeController.text.trim();
+                          final valor = _valorController.text.trim();
+                          final quantidade = _quantidadeController.text.trim();
 
-                      final ProdutoModel produto = ProdutoModel(
-                          nome: nome,
-                          valor: double.parse(valor),
-                          quantidade: double.parse(quantidade));
+                          final ProdutoModel produto = ProdutoModel(
+                              nome: nome,
+                              valor: double.parse(valor),
+                              quantidade: double.parse(quantidade));
 
-                      await Provider.of<ProdutoProvider>(context, listen: false)
-                          .adicionarProduto(produto);
+                          await Provider.of<ProdutoProvider>(context,
+                                  listen: false)
+                              .adicionarProduto(produto);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Produto adicionado a lista com sucesso ! '),
-                        ),
-                      );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'Produto adicionado a lista com sucesso ! '),
+                            ),
+                          );
 
-                      //LIMPANDO OS CAMPOS
-                      _nomeController.clear();
-                      _valorController.clear();
-                      _quantidadeController.clear();
-                    }
-                  },
-                  child: const Text(
-                    "Cadastrar",
-                    style: TextStyle(fontSize: 17),
-                  )),
-            ],
+                          //LIMPANDO OS CAMPOS
+                          _nomeController.clear();
+                          _valorController.clear();
+                          _quantidadeController.clear();
+                        }
+                      },
+                      child: const Text(
+                        "Cadastrar",
+                        style: TextStyle(fontSize: 17),
+                      )),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

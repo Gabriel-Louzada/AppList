@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProdutoProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Listfy',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),

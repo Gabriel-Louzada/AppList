@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/primeiraTela.dart';
 import 'package:listfy/screen/produtosPegos.dart';
 import 'package:listfy/screen/somadores.dart';
+import 'package:provider/provider.dart';
 
 class MeuDrawer extends StatelessWidget {
   const MeuDrawer({super.key});
@@ -20,18 +22,18 @@ class MeuDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Bem-vindo! ao ListFy',
+                  'ListFy',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: 20,
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Seu lista de compras de forma facil',
+                  'Seu App para lista de compras',
                   style: TextStyle(
                     color: Colors.white70,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -65,6 +67,15 @@ class MeuDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (contextNew) => const Somadores()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.library_add),
+            title: const Text('Add Cesta Completa'),
+            onTap: () async {
+              await Provider.of<ProdutoProvider>(context, listen: false)
+                  .adicionarProdutopadrao();
+              Navigator.pop(context);
             },
           ),
           ListTile(

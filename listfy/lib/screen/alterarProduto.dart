@@ -54,106 +54,112 @@ class _AlterarProdutoState extends State<AlterarProduto> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: const Text(
-          "Cadastro de produtos",
-          style: TextStyle(color: Colors.white, fontSize: 30),
+          "Alterar produto",
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Text("Adicionar Produtos a lista",
-                  style: TextStyle(fontSize: 25)),
-              const SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                controller: _nomeController,
-                maxLength: 5,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira o nome do produto";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Nome do produto:"),
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 5,
-                controller: _valorController,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira o valor estimado do produto";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Valor do produto:"),
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 5,
-                controller: _quantidadeController,
-                validator: (String? value) {
-                  if (validar(value)) {
-                    return "Insira a quantidade desejada";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                    label: Text("Quantidade:"), border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
-                      final id = widget.produto.id;
-                      final nome = _nomeController.text.trim();
-                      final valor = _valorController.text.trim();
-                      final quantidade = _quantidadeController.text.trim();
+      body: ListView(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(widget.produto.nome,
+                      style: const TextStyle(fontSize: 20)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    controller: _nomeController,
+                    maxLength: 30,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira o nome do produto";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Nome do produto:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 5,
+                    controller: _valorController,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira o valor estimado do produto";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Valor do produto:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 5,
+                    controller: _quantidadeController,
+                    validator: (String? value) {
+                      if (validar(value)) {
+                        return "Insira a quantidade desejada";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        label: Text("Quantidade:"),
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
+                          final id = widget.produto.id;
+                          final nome = _nomeController.text.trim();
+                          final valor = _valorController.text.trim();
+                          final quantidade = _quantidadeController.text.trim();
 
-                      final ProdutoModel produto = ProdutoModel(
-                          id: id,
-                          nome: nome,
-                          valor: double.parse(valor),
-                          quantidade: double.parse(quantidade));
+                          final ProdutoModel produto = ProdutoModel(
+                              id: id,
+                              nome: nome,
+                              valor: double.parse(valor),
+                              quantidade: double.parse(quantidade));
 
-                      await Provider.of<ProdutoProvider>(context, listen: false)
-                          .alterarProduto(produto);
+                          await Provider.of<ProdutoProvider>(context,
+                                  listen: false)
+                              .alterarProduto(produto);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Produto Alterado com sucesso !'),
-                        ),
-                      );
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text(
-                    "Alterar",
-                    style: TextStyle(fontSize: 17),
-                  )),
-            ],
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Produto Alterado com sucesso !'),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        "Alterar",
+                        style: TextStyle(fontSize: 17),
+                      )),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

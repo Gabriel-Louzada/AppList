@@ -49,7 +49,7 @@ class _SomadoresState extends State<Somadores> {
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Totalizador",
-          style: TextStyle(color: Colors.white, fontSize: 30),
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
       drawer: const MeuDrawer(),
@@ -61,11 +61,11 @@ class _SomadoresState extends State<Somadores> {
             children: [
               const Text(
                 "Total a Pagar: ",
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 20),
               ),
               Text(
                 "$valorTotal",
-                style: const TextStyle(fontSize: 30),
+                style: const TextStyle(fontSize: 25),
               ),
             ],
           ),
@@ -73,11 +73,11 @@ class _SomadoresState extends State<Somadores> {
             children: [
               const Text(
                 "Total Volumes: ",
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 20),
               ),
               Text(
                 "$quantidadeTotal",
-                style: const TextStyle(fontSize: 30),
+                style: const TextStyle(fontSize: 25),
               ),
             ],
           ),
