@@ -73,9 +73,32 @@ class MeuDrawer extends StatelessWidget {
             leading: const Icon(Icons.library_add),
             title: const Text('Add Cesta Completa'),
             onTap: () async {
-              await Provider.of<ProdutoProvider>(context, listen: false)
-                  .adicionarProdutopadrao();
-              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(
+                          "Deseja realmente adicionar os produtos padrões a lista ?"),
+                      content: const Text(
+                          "Essa função é utilzada para ganhar tempo no cadastro da lista"),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Cancelar",
+                                style: TextStyle(color: Colors.red))),
+                        ElevatedButton(
+                            onPressed: () async {
+                              await Provider.of<ProdutoProvider>(context,
+                                      listen: false)
+                                  .adicionarProdutopadrao();
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Add Lista"))
+                      ],
+                    );
+                  });
             },
           ),
           ListTile(

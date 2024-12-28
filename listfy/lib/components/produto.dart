@@ -99,9 +99,7 @@ class _ProdutoState extends State<Produto> {
                               valor: widget.produto.valor,
                               quantidade: widget.produto.quantidade,
                             );
-                            await Provider.of<ProdutoProvider>(context,
-                                    listen: false)
-                                .pegarProduto(produto);
+                            meuDialog(context, produto);
                           },
                           icon: const Icon(Icons.add_shopping_cart),
                         ),
@@ -149,6 +147,117 @@ class _ProdutoState extends State<Produto> {
           ),
         ),
       ],
+    );
+  }
+
+  bool validar(String? valor) {
+    if (valor != null && valor.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void meuDialog(BuildContext context, ProdutoModel produto) {
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+
+    final formKey = GlobalKey<FormState>();
+    TextEditingController valorController =
+        TextEditingController(text: produto.valor.toString());
+    TextEditingController quantidadeController =
+        TextEditingController(text: produto.quantidade.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Confirme valor e quantidade do produto: ${produto.nome}",
+            style: TextStyle(
+              fontSize: size.width * 0.05,
+            ),
+          ),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 5,
+                  controller: valorController,
+                  validator: (String? value) {
+                    if (validar(value)) {
+                      return "Insira o valor do produto";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: const InputDecoration(
+                      label: Text("Valor do produto:"),
+                      border: OutlineInputBorder()),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 5,
+                  controller: quantidadeController,
+                  validator: (String? value) {
+                    if (validar(value)) {
+                      return "Insira a quantidade desejada";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: const InputDecoration(
+                      label: Text("Quantidade:"), border: OutlineInputBorder()),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              children: [
+                //CANCELAR
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancelar",
+                        style: TextStyle(color: Colors.red))),
+                //ADICIONAR O CARRINHO
+                ElevatedButton(
+                  onPressed: () async {
+                    //CRIO O PRODUTO
+                    final id = produto.id;
+                    final nome = produto.nome;
+                    final valor = valorController.text.trim();
+                    final quantidade = quantidadeController.text.trim();
+                    final ProdutoModel produtoAlterado = ProdutoModel(
+                      id: id,
+                      nome: nome,
+                      valor: double.parse(valor),
+                      quantidade: double.parse(quantidade),
+                    );
+                    //ALTERO O PRODUTO
+                    await Provider.of<ProdutoProvider>(context, listen: false)
+                        .alterarProduto(produtoAlterado);
+                    // ADICIONO O PRODUTO AO CARRINHO COM OS VALORES E QUANTIDADES CORRETAS
+                    await Provider.of<ProdutoProvider>(context, listen: false)
+                        .pegarProduto(produto);
+                    //FECHAR A TELA
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Add Carrinho"),
+                ),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 }

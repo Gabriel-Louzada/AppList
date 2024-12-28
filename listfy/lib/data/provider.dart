@@ -61,7 +61,7 @@ class ProdutoProvider extends ChangeNotifier {
 
   double somarQuantidade() {
     double quantidadeTotal = 0;
-    for (var produto in produtos) {
+    for (var produto in produtosPegos) {
       quantidadeTotal += produto.quantidade;
     }
     return quantidadeTotal;
@@ -69,7 +69,7 @@ class ProdutoProvider extends ChangeNotifier {
 
   double somarValores() {
     double valorTotal = 0;
-    for (var produto in _produtos) {
+    for (var produto in produtosPegos) {
       valorTotal += (produto.valor * produto.quantidade);
     }
     return valorTotal;
