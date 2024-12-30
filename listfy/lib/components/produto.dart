@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:listfy/screen/alterarProduto.dart';
+import 'package:listfy/util/uteis.dart';
 import 'package:provider/provider.dart';
 
 // AQUI EU TENHO UMA CLASSE PRODUTO OU SEJA UM CARD
@@ -184,8 +185,9 @@ class _ProdutoState extends State<Produto> {
               children: [
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  maxLength: 5,
+                  maxLength: 7,
                   controller: valorController,
+                  inputFormatters: [CustomNumberFormatter()],
                   validator: (String? value) {
                     if (validar(value)) {
                       return "Insira o valor do produto";
@@ -202,7 +204,8 @@ class _ProdutoState extends State<Produto> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  maxLength: 5,
+                  maxLength: 7,
+                  inputFormatters: [CustomNumberFormatter()],
                   controller: quantidadeController,
                   validator: (String? value) {
                     if (validar(value)) {

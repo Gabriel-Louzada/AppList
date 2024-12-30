@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
+import 'package:listfy/util/uteis.dart';
 import 'package:provider/provider.dart';
 
 class AlterarProduto extends StatefulWidget {
@@ -91,7 +92,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    maxLength: 5,
+                    maxLength: 7,
+                    inputFormatters: [CustomNumberFormatter()],
                     controller: _valorController,
                     validator: (String? value) {
                       if (validar(value)) {
@@ -109,7 +111,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    maxLength: 5,
+                    maxLength: 7,
+                    inputFormatters: [CustomNumberFormatter()],
                     controller: _quantidadeController,
                     validator: (String? value) {
                       if (validar(value)) {
