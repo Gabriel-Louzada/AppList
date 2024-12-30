@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/primeiraTela.dart';
-import 'package:listfy/screen/produtosPegos.dart';
+import 'package:listfy/screen/TelaDeProdutosPegos.dart';
 import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
@@ -83,7 +83,7 @@ class MeuDrawer extends StatelessWidget {
                           "Essa função é utilzada para ganhar tempo no cadastro da lista"),
                       actions: [
                         ElevatedButton(
-                            onPressed: () async {
+                            onPressed: () {
                               Navigator.pop(context);
                             },
                             child: const Text("Cancelar",

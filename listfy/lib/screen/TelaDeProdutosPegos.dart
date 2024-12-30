@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/components/drawer.dart';
+import 'package:listfy/components/opcoesProdutosPegos.dart';
 import 'package:listfy/components/produtoPego.dart';
 import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
@@ -32,11 +33,13 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Carrinho",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
+        actions: const [OpcoesProdutoPegos()],
       ),
       drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(builder: (context, provider, child) {

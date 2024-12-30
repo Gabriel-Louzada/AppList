@@ -98,7 +98,7 @@ class _ProdutoState extends State<ProdutoPego> {
                               );
                               await Provider.of<ProdutoProvider>(context,
                                       listen: false)
-                                  .voltarCarrinho(produto);
+                                  .voltaLista(produto);
                             },
                             icon: const Icon(Icons.remove_shopping_cart)),
                         PopupMenuButton<SampleItem>(

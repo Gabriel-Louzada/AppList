@@ -52,6 +52,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Alterar produto",

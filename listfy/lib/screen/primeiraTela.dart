@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/components/drawer.dart';
+import 'package:listfy/components/opcoesProdutos.dart';
 import 'package:listfy/components/produto.dart';
 import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
@@ -31,11 +32,13 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Lista de Compras",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
+        actions: const [OpcoesProduto()],
       ),
       drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(

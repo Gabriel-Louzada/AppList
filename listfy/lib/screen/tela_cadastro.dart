@@ -39,6 +39,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text("ListFy",
             style: TextStyle(color: Colors.white, fontSize: 20)),

@@ -14,22 +14,6 @@ class Somadores extends StatefulWidget {
 class _SomadoresState extends State<Somadores> {
   List<ProdutoModel> produtos = [];
 
-  double somarQuantidade(List<ProdutoModel> produtos) {
-    double quantidadeTotal = 0;
-    for (var produto in produtos) {
-      quantidadeTotal += produto.quantidade;
-    }
-    return quantidadeTotal;
-  }
-
-  double somarValores(List<ProdutoModel> produtos) {
-    double valorTotal = 0;
-    for (var produto in produtos) {
-      valorTotal += produto.valor;
-    }
-    return valorTotal;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -40,12 +24,19 @@ class _SomadoresState extends State<Somadores> {
 
   @override
   Widget build(BuildContext context) {
-    double quantidadeTotal =
-        Provider.of<ProdutoProvider>(context, listen: false).somarQuantidade();
-    double valorTotal =
-        Provider.of<ProdutoProvider>(context, listen: false).somarValores();
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+
+    double quantidadeTotalCarrinho =
+        Provider.of<ProdutoProvider>(context, listen: false)
+            .somarQuantidadeCarrinho();
+    double valorTotalCarrinho =
+        Provider.of<ProdutoProvider>(context, listen: false)
+            .somarValoresCarrinho();
+
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text(
           "Totalizador",
@@ -53,33 +44,63 @@ class _SomadoresState extends State<Somadores> {
         ),
       ),
       drawer: const MeuDrawer(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: ListView(
         children: [
-          Row(
-            children: [
-              const Text(
-                "Total a Pagar: ",
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                "$valorTotal",
-                style: const TextStyle(fontSize: 25),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const Text(
-                "Total Volumes: ",
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                "$quantidadeTotal",
-                style: const TextStyle(fontSize: 25),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Pontos Importantes a se observar",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                        " 1° Essa pagina serve para mostrar o total de todos os produtos que você já adicionou no carrinho, Mas é apenas um previsão pois tem produtos pesaveis que o valor correto só aparecerá no caixa"),
+                    SizedBox(
+                      height: 12,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.width * 0.30,
+                ),
+                Column(
+                  children: [
+                    const Text("Previsão de valores no carrinho",
+                        style: TextStyle(fontSize: 18)),
+                    Row(
+                      children: [
+                        const Text(
+                          "Total a Pagar: ",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "$valorTotalCarrinho",
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Total Volumes: ",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "$quantidadeTotalCarrinho",
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),

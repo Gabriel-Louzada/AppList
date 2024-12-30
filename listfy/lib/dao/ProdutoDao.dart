@@ -123,7 +123,28 @@ class Produtodao {
     return retorno;
   }
 
-  Future<int> voltarCarrinho(ProdutoModel produto) async {
+//METODO PARA COLOCAR TODOS OS PRODUTOS NO CARRRINHO
+  Future<int> pegarTodosProdutos() async {
+    final db = await getDataBase();
+    const sqlUpdate = '''
+      UPDATE $nomeTabela
+         SET $pego = 1''';
+    final retorno = await db.rawUpdate(sqlUpdate, []);
+    return retorno;
+  }
+
+//METODO PARA TIRAR TODOS OS PRODUTOS DO CARRINHO
+  Future<int> voltarListaTodos() async {
+    final db = await getDataBase();
+    const sqlUpdate = '''
+      UPDATE $nomeTabela
+         SET $pego = 0''';
+    final retorno = await db.rawUpdate(sqlUpdate, []);
+    return retorno;
+  }
+
+//VOLTAR UM PRODUTO PARA A LISTA
+  Future<int> voltaLista(ProdutoModel produto) async {
     final db = await getDataBase();
     const sqlUpdate = '''
       UPDATE $nomeTabela 

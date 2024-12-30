@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
-import 'package:listfy/screen/alterarProduto.dart';
 import 'package:provider/provider.dart';
 
 // AQUI EU TENHO UMA CLASSE PRODUTO OU SEJA UM CARD
@@ -87,57 +86,9 @@ class _ProdutoState extends State<Produto> {
                         ],
                       ),
                     ),
-                    Column(
+                    const Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            ProdutoModel produto = ProdutoModel(
-                              id: widget.produto.id,
-                              nome: widget.produto.nome,
-                              valor: widget.produto.valor,
-                              quantidade: widget.produto.quantidade,
-                            );
-                            meuDialog(context, produto);
-                          },
-                          icon: const Icon(Icons.add_shopping_cart),
-                        ),
-                        PopupMenuButton<SampleItem>(
-                          initialValue: selectedItem,
-                          onSelected: (SampleItem item) {
-                            setState(() {
-                              selectedItem = item;
-                            });
-                          },
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<SampleItem>>[
-                            PopupMenuItem<SampleItem>(
-                              value: SampleItem.itemDois,
-                              child: const Text('Alterar'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (contextNew) => AlterarProduto(
-                                      produto: widget.produto,
-                                      produtoContext: contextNew,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            PopupMenuItem<SampleItem>(
-                              value: SampleItem.itemUm,
-                              child: const Text('Remover'),
-                              onTap: () async {
-                                await Provider.of<ProdutoProvider>(context,
-                                        listen: false)
-                                    .removerProduto(widget.produto.id!);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                      children: [],
                     ),
                   ],
                 ),

@@ -46,8 +46,8 @@ class ProdutoProvider extends ChangeNotifier {
   }
 
 //Posso pegar os dois tipos de produtos
-  Future<void> voltarCarrinho(ProdutoModel produto) async {
-    await Produtodao().voltarCarrinho(produto);
+  Future<void> voltaLista(ProdutoModel produto) async {
+    await Produtodao().voltaLista(produto);
     carregarProdutos();
     carregarProdutosPegos();
   }
@@ -59,7 +59,7 @@ class ProdutoProvider extends ChangeNotifier {
     carregarProdutosPegos();
   }
 
-  double somarQuantidade() {
+  double somarQuantidadeCarrinho() {
     double quantidadeTotal = 0;
     for (var produto in produtosPegos) {
       quantidadeTotal += produto.quantidade;
@@ -67,11 +67,41 @@ class ProdutoProvider extends ChangeNotifier {
     return quantidadeTotal;
   }
 
-  double somarValores() {
+  double somarValoresCarrinho() {
     double valorTotal = 0;
     for (var produto in produtosPegos) {
       valorTotal += (produto.valor * produto.quantidade);
     }
     return valorTotal;
+  }
+
+  double somarQuantidadeList() {
+    double quantidadeTotal = 0;
+    for (var produto in produtos) {
+      quantidadeTotal += produto.quantidade;
+    }
+    return quantidadeTotal;
+  }
+
+  double somarValoresList() {
+    double valorTotal = 0;
+    for (var produto in produtos) {
+      valorTotal += (produto.valor * produto.quantidade);
+    }
+    return valorTotal;
+  }
+
+//PEGAR TODOS OS PRODUTOS
+  Future<void> pegarTodosProdutos() async {
+    await Produtodao().pegarTodosProdutos();
+    carregarProdutos();
+    carregarProdutosPegos();
+  }
+
+//VOLTAR TODOS OS PRODUTOS PARA A LISTA
+  Future<void> voltaListaTodos() async {
+    await Produtodao().voltarListaTodos();
+    carregarProdutos();
+    carregarProdutosPegos();
   }
 }
