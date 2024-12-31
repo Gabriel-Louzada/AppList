@@ -7,13 +7,63 @@ class ProdutoProvider extends ChangeNotifier {
   List<ProdutoModel> _produtos = [];
   List<ProdutoModel> _produtosPegos = [];
 
+  //SEMPRE QUE O CHECKBOX FOR SELECIONADO, EU IREI ADICIONAR UM PRODUTO A LISTA
+  final List<ProdutoModel> _produtosSelecionados = [];
+
   List<ProdutoModel> get produtos => _produtos;
   List<ProdutoModel> get produtosPegos => _produtosPegos;
+  List<ProdutoModel> get produtosSelecionados => _produtosSelecionados;
 
   //CARREGAR TODOS OS PRODUTOS
   Future<void> carregarProdutos() async {
     _produtos = await Produtodao().listarTodosProdutos();
     notifyListeners();
+  }
+
+//SELECIONAR VARIOS PRODUTOS PARA REMOVER
+  void selecionarProduto(ProdutoModel produto, isChecked) {
+    if (isChecked) {
+      if (!_produtosSelecionados.contains(produto)) {
+        _produtosSelecionados.add(produto);
+      }
+    } else {
+      _produtosSelecionados.remove(produto);
+    }
+    notifyListeners();
+  }
+
+//MARCAR OU DESMARCAR TODOS OS PRODUTOS
+  void selecionarTodosProdutos() {
+    for (var produto in _produtos) {
+      if (produto.isChecked != true) {
+        produto.isChecked = true;
+        selecionarProduto(produto, true);
+      } else {
+        produto.isChecked = false;
+        selecionarProduto(produto, false);
+      }
+    }
+    notifyListeners();
+  }
+
+//REMOVER VARIOS PRODUTOS
+  Future<void> removerSelecionados() async {
+    for (var produto in produtosSelecionados) {
+      if (produto.isChecked) {
+        await Produtodao().removerProduto(produto.id!);
+      }
+    }
+    produtosSelecionados.clear();
+    resetarSelecao();
+    carregarProdutos();
+  }
+
+//GARANTO QUE TODOS OS PRODUTOS FIQUEM COM O CHECKBOX DESMARCADO
+  void resetarSelecao() {
+    for (var produto in _produtos) {
+      produto.isChecked = false;
+    }
+    carregarProdutos();
   }
 
   Future<void> carregarProdutosPegos() async {

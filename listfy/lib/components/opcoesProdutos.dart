@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
+import 'package:listfy/screen/selecaoscreen.dart';
 import 'package:provider/provider.dart';
 
 enum SampleItem { itemOne, itemTwo, itemThree }
@@ -35,7 +36,11 @@ class _OpcoesProdutoState extends State<OpcoesProduto> {
         ListTile(
           leading: const Icon(Icons.library_add_check_outlined),
           title: const Text("Selecionar Varios"),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const SelecaoScreen();
+            }));
+          },
         ),
         ListTile(
           leading: const Icon(Icons.add_shopping_cart_sharp),
