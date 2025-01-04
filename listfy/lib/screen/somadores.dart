@@ -80,7 +80,7 @@ class _SomadoresState extends State<Somadores> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "$valorTotalCarrinho",
+                          valorTotalCarrinho.toStringAsFixed(2),
                           style: const TextStyle(fontSize: 25),
                         ),
                       ],
@@ -92,7 +92,7 @@ class _SomadoresState extends State<Somadores> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "$quantidadeTotalCarrinho",
+                          quantidadeTotalCarrinho.toStringAsFixed(2),
                           style: const TextStyle(fontSize: 25),
                         ),
                       ],
