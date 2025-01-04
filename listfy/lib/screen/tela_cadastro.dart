@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
@@ -60,6 +59,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -182,47 +184,72 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   const SizedBox(
                     height: 15,
                   ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(8),
+                    width: size.width * 0.42,
+                    height: size.height * 0.25,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: const Border(
+                            top: BorderSide(color: Colors.black12, width: 3.5),
+                            bottom:
+                                BorderSide(color: Colors.black12, width: 3.5),
+                            left: BorderSide(color: Colors.black12, width: 3.5),
+                            right:
+                                BorderSide(color: Colors.black12, width: 3.5)),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: imageFile !=
+                                    null // SE A IMAGEM FOR DIFERENTE DE NULL
+                                ? FileImage(File(imageFile!.path.toString()))
+                                : const AssetImage("assets/icone_app.png"))),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
-                          final nome = _nomeController.text.trim();
-                          final valor = _valorController.text.trim();
-                          final quantidade = _quantidadeController.text.trim();
-                          final File imagem = imageFile != null
-                              ? File(imageFile!.path)
-                              : File("assets/icone_app.png");
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
+                        final nome = _nomeController.text.trim();
+                        final valor = _valorController.text.trim();
+                        final quantidade = _quantidadeController.text.trim();
+                        final File imagem = imageFile != null
+                            ? File(imageFile!.path)
+                            : File("assets/icone_app.png");
 
-                          final ProdutoModel produto = ProdutoModel(
-                              nome: nome,
-                              valor: double.parse(valor),
-                              quantidade: double.parse(quantidade),
-                              imagem: imagem.path.toString());
+                        final ProdutoModel produto = ProdutoModel(
+                            nome: nome,
+                            valor: double.parse(valor),
+                            quantidade: double.parse(quantidade),
+                            imagem: imagem.path.toString());
 
-                          await Provider.of<ProdutoProvider>(context,
-                                  listen: false)
-                              .adicionarProduto(produto);
+                        await Provider.of<ProdutoProvider>(context,
+                                listen: false)
+                            .adicionarProduto(produto);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'Produto adicionado a lista com sucesso'),
-                            ),
-                          );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Produto adicionado a lista com sucesso'),
+                          ),
+                        );
 
-                          //LIMPANDO OS CAMPOS
-                          _nomeController.clear();
-                          _valorController.clear();
-                          _quantidadeController.clear();
-                          setState(() {
-                            imageFile = null;
-                          });
-                        }
-                      },
-                      child: const Text(
-                        "Cadastrar",
-                        style: TextStyle(fontSize: 17),
-                      )),
+                        //LIMPANDO OS CAMPOS
+                        _nomeController.clear();
+                        _valorController.clear();
+                        _quantidadeController.clear();
+                        setState(() {
+                          imageFile = null;
+                        });
+                      }
+                    },
+                    child: const Text(
+                      "Cadastrar",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ],
               ),
             ),

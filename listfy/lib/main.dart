@@ -4,7 +4,6 @@ import 'package:listfy/screen/primeiraTela.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  //Nunca esqueça de que o Inherited deve ser o primeiro item da árvore de widget
   runApp(const MyApp());
 }
 

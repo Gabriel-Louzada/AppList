@@ -46,6 +46,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
     _quantidadeController =
         TextEditingController(text: widget.produto.quantidade.toString());
     imagem = File(widget.produto.imagem!.toString());
+    novaImagem = imagem;
   }
 
   @override
@@ -58,6 +59,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -133,7 +136,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                         border: OutlineInputBorder()),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   ListTile(
                     leading: const Icon(Icons.add_a_photo),
@@ -226,7 +229,31 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                         style: TextStyle(fontSize: 20)),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 15,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(8),
+                    width: size.width * 0.42,
+                    height: size.height * 0.25,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: const Border(
+                            top: BorderSide(color: Colors.black12, width: 3.5),
+                            bottom:
+                                BorderSide(color: Colors.black12, width: 3.5),
+                            left: BorderSide(color: Colors.black12, width: 3.5),
+                            right:
+                                BorderSide(color: Colors.black12, width: 3.5)),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: novaImagem == null ||
+                                    novaImagem!.path == imagemPadrao.path
+                                ? AssetImage(imagemPadrao.path)
+                                : FileImage(novaImagem!))),
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                   ElevatedButton(
                       onPressed: () async {
