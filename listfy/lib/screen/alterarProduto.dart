@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:listfy/util/uteis.dart';
+import 'package:listfy/util/vincularImagem.dart';
 import 'package:provider/provider.dart';
 
 class AlterarProduto extends StatefulWidget {
@@ -17,6 +21,9 @@ class AlterarProduto extends StatefulWidget {
 }
 
 class _AlterarProdutoState extends State<AlterarProduto> {
+  File? imagem;
+  File? novaImagem;
+  final File imagemPadrao = File("assets/icone_app.png");
   TextEditingController _nomeController = TextEditingController();
   TextEditingController _valorController = TextEditingController();
   TextEditingController _quantidadeController = TextEditingController();
@@ -34,6 +41,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
   @override
   void initState() {
     super.initState();
+    imagem = File(widget.produto.imagem!);
     _nomeController = TextEditingController(text: widget.produto.nome);
     _valorController =
         TextEditingController(text: widget.produto.valor.toString());
@@ -128,6 +136,99 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                   const SizedBox(
                     height: 25,
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.add_a_photo),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true, // Permite ocupar mais espaço
+                        builder: (context) => Container(
+                          padding: const EdgeInsets.all(8),
+                          height: MediaQuery.of(context).size.height *
+                              0.3, // Metade da tela
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.photo),
+                                title: const Text(
+                                  "Galeria",
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                                onTap: () async {
+                                  final imagemSelecionada =
+                                      await VincularImagem()
+                                          .pick(ImageSource.gallery);
+                                  if (imagemSelecionada != null) {
+                                    setState(() {
+                                      novaImagem = imagemSelecionada;
+                                    });
+                                  } else {
+                                    novaImagem = imagem;
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Nova imagem Vinculada com sucesso !'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.camera_alt),
+                                title: const Text(
+                                  "Camera",
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                                onTap: () async {
+                                  final imagemSelecionada =
+                                      await VincularImagem()
+                                          .pick(ImageSource.camera);
+                                  if (imagemSelecionada != null) {
+                                    setState(() {
+                                      novaImagem = imagemSelecionada;
+                                    });
+                                  } else {
+                                    novaImagem = imagem;
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Nova imagem Vinculada com sucesso !'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.delete),
+                                title: const Text(
+                                  "Remover imagem",
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    novaImagem = imagemPadrao;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Imagem removida !'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    title: const Text("Vincular imagem",
+                        style: TextStyle(fontSize: 20)),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -141,7 +242,10 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                               id: id,
                               nome: nome,
                               valor: double.parse(valor),
-                              quantidade: double.parse(quantidade));
+                              quantidade: double.parse(quantidade),
+                              imagem: novaImagem == null
+                                  ? imagem!.path
+                                  : novaImagem!.path);
 
                           await Provider.of<ProdutoProvider>(context,
                                   listen: false)

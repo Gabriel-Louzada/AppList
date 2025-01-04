@@ -8,6 +8,7 @@ class Produtodao {
   static const String valor = 'valor';
   static const String quantidade = 'quantidade';
   static const String pego = 'pego';
+  static const String imagem = 'imagem';
 
 //O PEGO IGUAL A 0 É O MESMO QUE FALSE IGUAL A 1 É O MESMO QUE VERDADEIRO
 // ENTENDO QUE FALSE (0) O PRODUTO AINDA NÃO FOI PEGO
@@ -18,19 +19,21 @@ class Produtodao {
   $nome       TEXT NOT NULL,
   $valor      REAL,
   $quantidade REAL,
-  $pego       INTEGER) 
+  $pego       INTEGER,
+  $imagem     TEXT) 
  ''';
 
 //METODO PARA INSERIR OS DADOS
   Future<int> inserirProduto(ProdutoModel produto) async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego) VALUES (?,?,?,0)
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem) VALUES (?,?,?,0,?)
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert, [
       capitalize(produto.nome),
       produto.valor,
-      produto.quantidade
+      produto.quantidade,
+      produto.imagem
     ]); //INSERINDO OS DADOS E ARMAZENANDO O RETORNO EM UMA VARIAVEL O RETORNO É O ID DO PRODUTO
     return resultado;
   }
@@ -38,32 +41,32 @@ class Produtodao {
   Future<int> inserirProdutoPadrao() async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego) VALUES
-('Arroz', 1.00, 1, 0),
-('Feijão', 1.00, 1, 0),
-('Macarrão', 1.00, 1, 0),
-('Óleo de Soja', 1.00, 1, 0),
-('Açúcar', 1.00, 1, 0),
-('Café', 1.00, 1, 0),
-('Leite', 1.00, 6, 0),
-('Farinha de Trigo', 1.00, 1, 0),
-('Sal', 1.00, 1, 0),
-('Carne Bovina', 1.00, 2, 0),
-('Frango', 1.00, 2, 0),
-('Ovos', 1.00, 12, 0),
-('Batata', 1.00, 3, 0),
-('Tomate', 1.00, 3, 0),
-('Cebola', 1.00, 2, 0),
-('Alho', 1.00, 1, 0),
-('Banana', 1.00, 6, 0),
-('Maçã', 1.00, 4, 0),
-('Sabonete', 1.00, 3, 0),
-('Detergente', 1.00, 1, 0),
-('Papel Higiênico', 1.00, 12, 0),
-('Creme Dental', 1.00, 1, 0),
-('Shampoo', 1.00, 1, 0),
-('Condicionador', 1.00, 1, 0),
-('Desinfetante', 1.00, 1, 0);
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem) VALUES
+('Arroz', 1.00, 1, 0, "assets/icone_app.png"),
+('Feijão', 1.00, 1, 0, "assets/icone_app.png"),
+('Macarrão', 1.00, 1, 0, "assets/icone_app.png"),
+('Óleo de Soja', 1.00, 1, 0, "assets/icone_app.png"),
+('Açúcar', 1.00, 1, 0, "assets/icone_app.png"),
+('Café', 1.00, 1, 0, "assets/icone_app.png"),
+('Leite', 1.00, 6, 0, "assets/icone_app.png"),
+('Farinha de Trigo', 1.00, 1, 0, "assets/icone_app.png"),
+('Sal', 1.00, 1, 0, "assets/icone_app.png"),
+('Carne Bovina', 1.00, 2, 0, "assets/icone_app.png"),
+('Frango', 1.00, 2, 0, "assets/icone_app.png"),
+('Ovos', 1.00, 12, 0, "assets/icone_app.png"),
+('Batata', 1.00, 3, 0, "assets/icone_app.png"),
+('Tomate', 1.00, 3, 0, "assets/icone_app.png"),
+('Cebola', 1.00, 2, 0, "assets/icone_app.png"),
+('Alho', 1.00, 1, 0, "assets/icone_app.png"),
+('Banana', 1.00, 6, 0, "assets/icone_app.png"),
+('Maçã', 1.00, 4, 0, "assets/icone_app.png"),
+('Sabonete', 1.00, 3, 0, "assets/icone_app.png"),
+('Detergente', 1.00, 1, 0, "assets/icone_app.png"),
+('Papel Higiênico', 1.00, 12, 0, "assets/icone_app.png"),
+('Creme Dental', 1.00, 1, 0, "assets/icone_app.png"),
+('Shampoo', 1.00, 1, 0, "assets/icone_app.png"),
+('Condicionador', 1.00, 1, 0, "assets/icone_app.png"),
+('Desinfetante', 1.00, 1, 0, "assets/icone_app.png");
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert);
     return resultado;
@@ -73,11 +76,10 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela WHERE $pego = 0 ORDER BY $nome''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem FROM $nomeTabela WHERE $pego = 0 ORDER BY $nome''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
-    print(produtos);
     return produtos;
   }
 
@@ -85,7 +87,7 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutosPegos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego FROM $nomeTabela WHERE $pego = 1  ORDER BY $nome ''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem FROM $nomeTabela WHERE $pego = 1  ORDER BY $nome ''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
@@ -99,12 +101,14 @@ class Produtodao {
       UPDATE $nomeTabela 
          SET $nome = ?,
              $valor = ?,
-             $quantidade = ?
+             $quantidade = ?,
+             $imagem = ?
        WHERE $id = ?''';
     final retorno = await db.rawUpdate(sqlUpdate, [
       produto.nome,
       produto.valor,
       produto.quantidade,
+      produto.imagem,
       produto.id,
     ]);
     return retorno;

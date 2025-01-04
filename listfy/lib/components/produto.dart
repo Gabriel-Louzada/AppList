@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
@@ -51,20 +53,18 @@ class _ProdutoState extends State<Produto> {
                     Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.black12,
-                      ),
                       width: size.width * 0.22,
                       height: size.height,
-                      child: Text(
-                        "Imagem do Produto",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 0.040 * size.width,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.black12,
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: widget.produto.imagem != null &&
+                                      widget.produto.imagem !=
+                                          "assets/icone_app.png"
+                                  ? FileImage(File(widget.produto.imagem!))
+                                  : const AssetImage("assets/icone_app.png"))),
                     ),
                     SizedBox(
                       width: 0.020 * size.width,
