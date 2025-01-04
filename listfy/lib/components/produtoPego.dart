@@ -83,6 +83,7 @@ class _ProdutoState extends State<ProdutoPego> {
                             "Valor: ${widget.produto.valor} Qtde: ${widget.produto.quantidade}",
                             style: TextStyle(fontSize: 0.036 * size.width),
                           ),
+                          Text("Imagem: ${widget.produto.imagem}"),
                         ],
                       ),
                     ),

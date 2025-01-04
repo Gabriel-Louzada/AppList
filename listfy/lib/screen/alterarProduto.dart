@@ -9,12 +9,11 @@ import 'package:listfy/util/vincularImagem.dart';
 import 'package:provider/provider.dart';
 
 class AlterarProduto extends StatefulWidget {
-  const AlterarProduto(
-      {super.key, required this.produto, required this.produtoContext});
-//Aqui eu entendi que eu estou criando um context e tornando ele de certa forma obrigatório
-
   final BuildContext produtoContext;
   final ProdutoModel produto;
+
+  const AlterarProduto(
+      {super.key, required this.produto, required this.produtoContext});
 
   @override
   State<AlterarProduto> createState() => _AlterarProdutoState();
@@ -41,12 +40,12 @@ class _AlterarProdutoState extends State<AlterarProduto> {
   @override
   void initState() {
     super.initState();
-    imagem = File(widget.produto.imagem!);
     _nomeController = TextEditingController(text: widget.produto.nome);
     _valorController =
         TextEditingController(text: widget.produto.valor.toString());
     _quantidadeController =
         TextEditingController(text: widget.produto.quantidade.toString());
+    imagem = File(widget.produto.imagem!.toString());
   }
 
   @override

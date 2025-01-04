@@ -85,6 +85,7 @@ class _ProdutoState extends State<Produto> {
                             "Valor: ${widget.produto.valor} Qtde: ${widget.produto.quantidade}",
                             style: TextStyle(fontSize: 0.035 * size.width),
                           ),
+                          Text("Imagem: ${widget.produto.imagem}"),
                         ],
                       ),
                     ),
@@ -238,11 +239,14 @@ class _ProdutoState extends State<Produto> {
                     final nome = produto.nome;
                     final valor = valorController.text.trim();
                     final quantidade = quantidadeController.text.trim();
+                    final File imagem = File(widget.produto.imagem!);
+
                     final ProdutoModel produtoAlterado = ProdutoModel(
                       id: id,
                       nome: nome,
                       valor: double.parse(valor),
                       quantidade: double.parse(quantidade),
+                      imagem: imagem.path.toString(),
                     );
                     //ALTERO O PRODUTO
                     await Provider.of<ProdutoProvider>(context, listen: false)
