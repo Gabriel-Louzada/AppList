@@ -85,7 +85,6 @@ class _ProdutoState extends State<Produto> {
                             "Valor: ${widget.produto.valor} Qtde: ${widget.produto.quantidade}",
                             style: TextStyle(fontSize: 0.035 * size.width),
                           ),
-                          Text("Imagem: ${widget.produto.imagem}"),
                         ],
                       ),
                     ),
