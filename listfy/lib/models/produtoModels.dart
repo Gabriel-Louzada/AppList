@@ -4,7 +4,7 @@ class ProdutoModel {
   final double valor;
   final double quantidade;
   final int? pego;
-  bool isChecked = false;
+  bool isChecked = false; // esse cara tem a ver com a seleção de produtos
   String? imagem;
 
   ProdutoModel(
@@ -13,7 +13,6 @@ class ProdutoModel {
       required this.valor,
       required this.quantidade,
       this.pego,
-      this.isChecked = false,
       this.imagem});
 
 //CONVERTE OS PRODUTOS EM UM MAP DE PRODUTOS
@@ -24,7 +23,6 @@ class ProdutoModel {
       'valor': valor,
       'quantidade': quantidade,
       'pego': pego,
-      'isChecked': isChecked,
       'imagem': imagem
     };
   }

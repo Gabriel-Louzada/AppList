@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/selecaoscreen.dart';
+import 'package:listfy/screen/tela_cadastro.dart';
 import 'package:provider/provider.dart';
 
 enum SampleItem { itemOne, itemTwo, itemThree }
@@ -33,6 +34,17 @@ class _OpcoesProdutoState extends State<OpcoesProduto> {
         );
       },
       menuChildren: [
+        ListTile(
+          leading: const Icon(Icons.add_box_outlined),
+          title: const Text('Cadastrar Produto'),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (contextNew) =>
+                        TelaCadastro(produtoContext: contextNew)));
+          },
+        ),
         ListTile(
           leading: const Icon(Icons.library_add_check_outlined),
           title: const Text("Selecionar Varios"),

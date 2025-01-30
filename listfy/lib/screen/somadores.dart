@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:listfy/components/drawer.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +42,6 @@ class _SomadoresState extends State<Somadores> {
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
-      drawer: const MeuDrawer(),
       body: ListView(
         children: [
           Padding(
@@ -97,6 +95,45 @@ class _SomadoresState extends State<Somadores> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    "Você realmente finalizou a sua compra?"),
+                                content: const Text(
+                                    "Ao confirmar todos os produtos serão retornados para a sua lista, para que sejam utilizados na proxima compra. "),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "Cancelar",
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        //ESSE COMANDO FAZ COM QUE O SISTEMA VOLTE PARA A TELA INICIAL.
+                                        Navigator.of(context).popUntil(
+                                            ((route) => route.isFirst));
+                                        await Provider.of<ProdutoProvider>(
+                                                context,
+                                                listen: false)
+                                            .voltaListaTodos();
+                                      },
+                                      child: const Text("Continuar"))
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Text("Finalizar Compras"))
                   ],
                 ),
               ],

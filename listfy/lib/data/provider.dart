@@ -17,6 +17,15 @@ class ProdutoProvider extends ChangeNotifier {
   //CARREGAR TODOS OS PRODUTOS
   Future<void> carregarProdutos() async {
     _produtos = await Produtodao().listarTodosProdutos();
+    print(_produtosPegos);
+    print(_produtos);
+    notifyListeners();
+  }
+
+  Future<void> carregarProdutosPegos() async {
+    _produtosPegos = await Produtodao().listarTodosProdutosPegos();
+    print(_produtosPegos);
+    print(_produtos);
     notifyListeners();
   }
 
@@ -64,11 +73,6 @@ class ProdutoProvider extends ChangeNotifier {
       produto.isChecked = false;
     }
     carregarProdutos();
-  }
-
-  Future<void> carregarProdutosPegos() async {
-    _produtosPegos = await Produtodao().listarTodosProdutosPegos();
-    notifyListeners();
   }
 
   Future<void> adicionarProduto(ProdutoModel produto) async {

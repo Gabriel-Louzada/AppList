@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:listfy/components/drawer.dart';
 import 'package:listfy/components/opcoesProdutosPegos.dart';
 import 'package:listfy/components/produtoPego.dart';
 import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
-import 'package:listfy/screen/tela_cadastro.dart';
+import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
 class TelaDeProdutosPegos extends StatefulWidget {
@@ -41,25 +40,25 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
         ),
         actions: const [OpcoesProdutoPegos()],
       ),
-      drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(builder: (context, provider, child) {
         return ListView.builder(
-          itemCount: provider.produtosPegos.length,
+          itemCount: provider.produtosPegos.length + 1,
           itemBuilder: (context, index) {
-            final produtoProvider = provider.produtosPegos[index];
-            return ProdutoPego(produto: produtoProvider);
+            if (index == provider.produtosPegos.length) {
+              return const SizedBox(height: 80);
+            } else {
+              final produtoProvider = provider.produtosPegos[index];
+              return ProdutoPego(produto: produtoProvider);
+            }
           },
         );
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (contextNew) =>
-                      TelaCadastro(produtoContext: contextNew)));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (contextNew) => const Somadores()));
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.check),
       ),
     );
   }

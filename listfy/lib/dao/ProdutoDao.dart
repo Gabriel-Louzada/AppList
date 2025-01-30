@@ -27,12 +27,13 @@ class Produtodao {
   Future<int> inserirProduto(ProdutoModel produto) async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem) VALUES (?,?,?,0,?)
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem) VALUES (?,?,?,?,?)
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert, [
       capitalize(produto.nome),
       produto.valor,
       produto.quantidade,
+      produto.pego,
       produto.imagem
     ]); //INSERINDO OS DADOS E ARMAZENANDO O RETORNO EM UMA VARIAVEL O RETORNO É O ID DO PRODUTO
     return resultado;
@@ -102,12 +103,14 @@ class Produtodao {
          SET $nome = ?,
              $valor = ?,
              $quantidade = ?,
+             $pego = ?,
              $imagem = ?
        WHERE $id = ?''';
     final retorno = await db.rawUpdate(sqlUpdate, [
       produto.nome,
       produto.valor,
       produto.quantidade,
+      produto.pego,
       produto.imagem,
       produto.id,
     ]);

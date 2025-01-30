@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/primeiraTela.dart';
-import 'package:listfy/screen/TelaDeProdutosPegos.dart';
+// import 'package:listfy/screen/TelaDeProdutosPegos.dart';
 import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
@@ -43,26 +43,29 @@ class MeuDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Lista de Compras'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (contextNew) => const PrimeiraTela()));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.shopping_cart_outlined),
-            title: const Text('Carrinho'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (contextNew) => const TelaDeProdutosPegos()));
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.shopping_cart_outlined),
+          //   title: const Text('Carrinho'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (contextNew) => const TelaDeProdutosPegos()));
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.monetization_on),
             title: const Text('Totalizadores'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -101,22 +104,20 @@ class MeuDrawer extends StatelessWidget {
                   });
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Configurações'),
-            onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('Sobre'),
-            onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.pushNamed(context, '/about');
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.settings),
+          //   title: const Text('Configurações'),
+          //   onTap: () {
+          //     Navigator.pop(context); // Fecha o Drawer
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.info),
+          //   title: const Text('Sobre'),
+          //   onTap: () {
+          //     Navigator.pop(context); // Fecha o Drawer
+          //   },
+          // ),
         ],
       ),
     );

@@ -33,6 +33,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
     }
   }
 
+  bool isPego = false;
+  int validaPego(isPego) {
+    if (isPego == false) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
   @override
   void dispose() {
     _nomeController.dispose();
@@ -57,6 +66,14 @@ class _TelaCadastroState extends State<TelaCadastro> {
     }
   }
 
+  static const WidgetStateProperty<Icon> thumbIcon =
+      WidgetStateProperty<Icon>.fromMap(
+    <WidgetStatesConstraint, Icon>{
+      WidgetState.selected: Icon(Icons.check),
+      WidgetState.any: Icon(Icons.close),
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -80,7 +97,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   const Text("Adicionar Produto a lista",
                       style: TextStyle(fontSize: 18)),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   TextFormField(
                     controller: _nomeController,
@@ -97,7 +114,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                         border: OutlineInputBorder()),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
@@ -117,7 +134,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                         border: OutlineInputBorder()),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
@@ -137,7 +154,28 @@ class _TelaCadastroState extends State<TelaCadastro> {
                         border: OutlineInputBorder()),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Text(
+                        "O produto já esta no carrinho?",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Switch(
+                        thumbIcon: thumbIcon,
+                        value: isPego,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isPego = value;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   ListTile(
                     leading: const Icon(Icons.add_a_photo),
@@ -182,7 +220,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                         style: TextStyle(fontSize: 20)),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Container(
                     alignment: Alignment.center,
@@ -206,7 +244,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                                 : const AssetImage("assets/icone_app.png"))),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -223,6 +261,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                             nome: nome,
                             valor: double.parse(valor),
                             quantidade: double.parse(quantidade),
+                            pego: validaPego(isPego),
                             imagem: imagem.path.toString());
 
                         await Provider.of<ProdutoProvider>(context,

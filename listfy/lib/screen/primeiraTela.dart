@@ -5,7 +5,7 @@ import 'package:listfy/components/produto.dart';
 import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
-import 'package:listfy/screen/tela_cadastro.dart';
+import 'package:listfy/screen/TelaDeProdutosPegos.dart';
 import 'package:provider/provider.dart';
 
 class PrimeiraTela extends StatefulWidget {
@@ -61,10 +61,9 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (contextNew) =>
-                      TelaCadastro(produtoContext: contextNew)));
+                  builder: (contextNew) => const TelaDeProdutosPegos()));
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.shopping_cart_outlined),
       ),
     );
   }
