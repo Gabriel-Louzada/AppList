@@ -1,52 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:listfy/components/drawer.dart';
-import 'package:listfy/components/opcoesProdutos.dart';
-import 'package:listfy/components/produto.dart';
+import 'package:listfy/components/ProdutoDesativado.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
-import 'package:listfy/screen/TelaDeProdutosPegos.dart';
 import 'package:provider/provider.dart';
 
-class PrimeiraTela extends StatefulWidget {
-  const PrimeiraTela({super.key});
+class TelaDeProdutosDesativados extends StatefulWidget {
+  const TelaDeProdutosDesativados({super.key});
 
   @override
-  State<PrimeiraTela> createState() => _PrimeiraTelaState();
+  State<TelaDeProdutosDesativados> createState() =>
+      _TelaDeProdutosDesativadosState();
 }
 
-class _PrimeiraTelaState extends State<PrimeiraTela> {
+class _TelaDeProdutosDesativadosState extends State<TelaDeProdutosDesativados> {
   bool isChecked = false; //ESTADO INICIAL DO CHECKBOX
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProdutoProvider>(context, listen: false).carregarProdutos();
+      Provider.of<ProdutoProvider>(context, listen: false)
+          .carregarProdutosDesativados();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final size = mediaQuery.size;
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
         title: const Text(
-          "Lista de Compras",
+          "Produtos Desativados",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        actions: const [OpcoesProduto()],
       ),
-      drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(
         builder: (context, provider, child) {
           // Agrupar os produtos pela categoria
           final Map<String, List<ProdutoModel>> produtosPorCategoria = {};
 
-          for (var produto in provider.produtos) {
+          for (var produto in provider.produtosDesativados) {
             if (!produtosPorCategoria.containsKey(produto.categoria)) {
               produtosPorCategoria[produto.categoria!] = [];
             }
@@ -60,9 +54,7 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
             itemCount: categorias.length + 1,
             itemBuilder: (context, index) {
               if (index == categorias.length) {
-                return SizedBox(
-                  height: size.width * 0.20,
-                );
+                return const SizedBox(height: 80);
               } else {
                 final categoria = categorias[index];
                 final produtos = produtosPorCategoria[categoria]!;
@@ -79,22 +71,13 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
                         fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   children: produtos.map((produto) {
-                    return Produto(produto: produto);
+                    return ProdutoDesativado(produto: produto);
                   }).toList(),
                 );
               }
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (contextNew) => const TelaDeProdutosPegos()));
-        },
-        child: const Icon(Icons.shopping_cart_outlined),
       ),
     );
   }

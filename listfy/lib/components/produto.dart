@@ -97,12 +97,12 @@ class _ProdutoState extends State<Produto> {
                           IconButton(
                             onPressed: () async {
                               ProdutoModel produto = ProdutoModel(
-                                id: widget.produto.id,
-                                nome: widget.produto.nome,
-                                valor: widget.produto.valor,
-                                quantidade: widget.produto.quantidade,
-                                categoria: widget.produto.categoria,
-                              );
+                                  id: widget.produto.id,
+                                  nome: widget.produto.nome,
+                                  valor: widget.produto.valor,
+                                  quantidade: widget.produto.quantidade,
+                                  categoria: widget.produto.categoria,
+                                  isAtivo: widget.produto.isAtivo);
                               meuDialog(context, produto);
                             },
                             icon: const Icon(Icons.add_shopping_cart),
@@ -245,6 +245,7 @@ class _ProdutoState extends State<Produto> {
                     final quantidade = quantidadeController.text.trim();
                     final File imagem = File(widget.produto.imagem!);
                     final categoria = produto.categoria;
+                    final isAtivo = produto.isAtivo;
 
                     final ProdutoModel produtoAlterado = ProdutoModel(
                       id: id,
@@ -253,6 +254,7 @@ class _ProdutoState extends State<Produto> {
                       quantidade: double.parse(quantidade),
                       imagem: imagem.path.toString(),
                       categoria: categoria,
+                      isAtivo: isAtivo,
                     );
                     //ALTERO O PRODUTO
                     await Provider.of<ProdutoProvider>(context, listen: false)
@@ -260,6 +262,12 @@ class _ProdutoState extends State<Produto> {
                     // ADICIONO O PRODUTO AO CARRINHO COM OS VALORES E QUANTIDADES CORRETAS
                     await Provider.of<ProdutoProvider>(context, listen: false)
                         .pegarProduto(produto);
+
+                    Provider.of<ProdutoProvider>(context, listen: false)
+                        .somarQuantidadeCarrinho();
+                    Provider.of<ProdutoProvider>(context, listen: false)
+                        .somarValoresCarrinho();
+
                     //FECHAR A TELA
                     Navigator.pop(context);
                   },

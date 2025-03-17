@@ -21,6 +21,7 @@ class AlterarProduto extends StatefulWidget {
 
 class _AlterarProdutoState extends State<AlterarProduto> {
   late bool isPego;
+  late bool isAtivo;
   File? imagem;
   File? novaImagem;
   String? _opcaoSelecionada;
@@ -55,8 +56,24 @@ class _AlterarProdutoState extends State<AlterarProduto> {
     }
   }
 
+  int validaAtivo(isAtivo) {
+    if (isAtivo == false) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
   bool isPegoBd(int? pegoBd) {
     if (pegoBd == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool isAtivoBd(int? ativoBd) {
+    if (ativoBd == 0) {
       return false;
     } else {
       return true;
@@ -74,6 +91,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
     imagem = File(widget.produto.imagem!.toString());
     novaImagem = imagem;
     isPego = isPegoBd(widget.produto.pego);
+    isAtivo = isAtivoBd(widget.produto.isAtivo);
+    _opcaoSelecionada = widget.produto.categoria!;
   }
 
   @override
@@ -142,6 +161,9 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                       DropdownMenuItem(
                           value: 'Frios e laticínios',
                           child: Text('Frios e laticínios')),
+                      DropdownMenuItem(
+                          value: 'Limpesa e Higiene Pessoal',
+                          child: Text('Limpesa e Higiene Pessoal')),
                       DropdownMenuItem(value: 'Geral', child: Text('Geral')),
                     ],
                     onChanged: (String? novoValor) {
@@ -198,7 +220,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         "O produto já esta no carrinho?",
@@ -210,6 +232,24 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                         onChanged: (bool value) {
                           setState(() {
                             isPego = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Produto Ativo?",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Switch(
+                        thumbIcon: thumbIcon,
+                        value: isAtivo,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isAtivo = value;
                           });
                         },
                       )
@@ -354,7 +394,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                               imagem: novaImagem == null
                                   ? imagem!.path
                                   : novaImagem!.path,
-                              categoria: categoria);
+                              categoria: categoria,
+                              isAtivo: validaAtivo(isAtivo));
 
                           await Provider.of<ProdutoProvider>(context,
                                   listen: false)

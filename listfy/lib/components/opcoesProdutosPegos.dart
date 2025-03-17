@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/screen/primeiraTela.dart';
-import 'package:listfy/screen/selecaoscreen.dart';
+// import 'package:listfy/screen/selecaoscreen.dart';
 import 'package:listfy/screen/tela_cadastro.dart';
 import 'package:provider/provider.dart';
 
@@ -46,15 +46,15 @@ class _OpcoesProdutoState extends State<OpcoesProdutoPegos> {
                         TelaCadastro(produtoContext: contextNew)));
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.library_add_check_outlined),
-          title: const Text("Selecionar Varios"),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const SelecaoScreen();
-            }));
-          },
-        ),
+        // ListTile(
+        //   leading: const Icon(Icons.library_add_check_outlined),
+        //   title: const Text("Selecionar Varios"),
+        //   onTap: () {
+        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //       return const SelecaoScreen();
+        //     }));
+        //   },
+        // ),
         ListTile(
           leading: const Icon(Icons.add_shopping_cart_sharp),
           title: const Text("Voltar todos a lista"),

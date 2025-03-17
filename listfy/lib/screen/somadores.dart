@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
-import 'package:listfy/models/produtoModels.dart';
 import 'package:provider/provider.dart';
 
 class Somadores extends StatefulWidget {
@@ -11,8 +10,6 @@ class Somadores extends StatefulWidget {
 }
 
 class _SomadoresState extends State<Somadores> {
-  List<ProdutoModel> produtos = [];
-
   @override
   void initState() {
     super.initState();

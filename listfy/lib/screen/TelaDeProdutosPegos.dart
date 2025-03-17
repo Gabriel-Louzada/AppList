@@ -3,7 +3,7 @@ import 'package:listfy/components/opcoesProdutosPegos.dart';
 import 'package:listfy/components/produtoPego.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
-import 'package:listfy/screen/somadores.dart';
+// import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
 class TelaDeProdutosPegos extends StatefulWidget {
@@ -27,6 +27,9 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -56,7 +59,54 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
             itemCount: categorias.length + 1,
             itemBuilder: (context, index) {
               if (index == categorias.length) {
-                return const SizedBox(height: 80);
+                return SizedBox(
+                  height: size.width * 0.45,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const Text("Previsão de valores no carrinho",
+                            style: TextStyle(fontSize: 18)),
+                        Row(
+                          children: [
+                            const Text(
+                              "Total a Pagar: ",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              Provider.of<ProdutoProvider>(context,
+                                      listen: false)
+                                  .somarValoresCarrinho()
+                                  .toStringAsFixed(2),
+                              style: const TextStyle(fontSize: 25),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              "Total Volumes: ",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              Provider.of<ProdutoProvider>(context,
+                                      listen: false)
+                                  .somarQuantidadeCarrinho()
+                                  .toStringAsFixed(2),
+                              style: const TextStyle(fontSize: 25),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               } else {
                 final categoria = categorias[index];
                 final produtos = produtosPorCategoria[categoria]!;
@@ -81,13 +131,13 @@ class _TelaDeProdutosPegosState extends State<TelaDeProdutosPegos> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (contextNew) => const Somadores()));
-        },
-        child: const Icon(Icons.check),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(context,
+      //         MaterialPageRoute(builder: (contextNew) => const Somadores()));
+      //   },
+      //   child: const Icon(Icons.check),
+      // ),
     );
   }
 }

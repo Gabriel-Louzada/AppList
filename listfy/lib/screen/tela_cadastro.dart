@@ -133,6 +133,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       DropdownMenuItem(
                           value: 'Frios e laticínios',
                           child: Text('Frios e laticínios')),
+                      DropdownMenuItem(
+                          value: 'Limpesa e Higiene Pessoal',
+                          child: Text('Limpesa e Higiene Pessoal')),
                       DropdownMenuItem(value: 'Geral', child: Text('Geral')),
                     ],
                     onChanged: (String? novoValor) {
@@ -211,50 +214,56 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   const SizedBox(
                     height: 10,
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.add_a_photo),
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true, // Permite ocupar mais espaço
-                        builder: (context) => Container(
-                          padding: const EdgeInsets.all(8),
-                          height: MediaQuery.of(context).size.height *
-                              0.25, // Metade da tela
-                          child: Column(
-                            children: [
-                              ListTile(
-                                leading: const Icon(Icons.photo),
-                                title: const Text(
-                                  "Galeria",
-                                  style: TextStyle(fontSize: 25),
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(12, 0, 0, 0),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: ListTile(
+                      leading: const Icon(Icons.add_a_photo),
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled:
+                              true, // Permite ocupar mais espaço
+                          builder: (context) => Container(
+                            padding: const EdgeInsets.all(8),
+                            height: MediaQuery.of(context).size.height *
+                                0.25, // Metade da tela
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Icons.photo),
+                                  title: const Text(
+                                    "Galeria",
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                                  onTap: () {
+                                    pick(ImageSource.gallery);
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onTap: () {
-                                  pick(ImageSource.gallery);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.camera_alt),
-                                title: const Text(
-                                  "Camera",
-                                  style: TextStyle(fontSize: 25),
+                                ListTile(
+                                  leading: const Icon(Icons.camera_alt),
+                                  title: const Text(
+                                    "Camera",
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                                  onTap: () {
+                                    pick(ImageSource.camera);
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onTap: () {
-                                  pick(ImageSource.camera);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    title: const Text("Vincular imagem",
-                        style: TextStyle(fontSize: 20)),
+                        );
+                      },
+                      title: const Text("Vincular imagem",
+                          style: TextStyle(fontSize: 20)),
+                    ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Container(
                     alignment: Alignment.center,
@@ -291,6 +300,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           final File imagem = imageFile != null
                               ? File(imageFile!.path)
                               : File("assets/icone_app.png");
+                          int isAtivo = 1;
 
                           final ProdutoModel produto = ProdutoModel(
                               nome: nome,
@@ -298,7 +308,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
                               quantidade: double.parse(quantidade),
                               pego: validaPego(isPego),
                               imagem: imagem.path.toString(),
-                              categoria: _opcaoSelecionada!);
+                              categoria: _opcaoSelecionada!,
+                              isAtivo: isAtivo);
 
                           await Provider.of<ProdutoProvider>(context,
                                   listen: false)
@@ -358,6 +369,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 50,
+          )
         ],
       ),
     );

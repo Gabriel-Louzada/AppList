@@ -10,9 +10,22 @@ class Produtodao {
   static const String pego = 'pego';
   static const String imagem = 'imagem';
   static const String categoria = 'categoria';
+  static const String isAtivo = 'isAtivo';
 
 //O PEGO IGUAL A 0 É O MESMO QUE FALSE IGUAL A 1 É O MESMO QUE VERDADEIRO
 // ENTENDO QUE FALSE (0) O PRODUTO AINDA NÃO FOI PEGO
+
+  static const String create = '''
+  CREATE TABLE IF NOT EXISTS $nomeTabela(
+  $id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  $nome       TEXT NOT NULL,
+  $valor      REAL,
+  $quantidade REAL,
+  $pego       INTEGER,
+  $imagem     TEXT,
+  $categoria  TEXT,
+  $isAtivo    INTEGER) 
+ ''';
 
   Future<void> adicionarColunaImagem() async {
     try {
@@ -34,44 +47,21 @@ class Produtodao {
     }
   }
 
-  Future<void> removerbd() async {
+  Future<void> adicionarColunaIsAtivo() async {
     try {
       final db = await getDataBase();
-      const sql = '''DROP TABLE $nomeTabela''';
+      const sql = '''ALTER TABLE $nomeTabela ADD COLUMN $isAtivo INTEGER''';
       await db.execute(sql);
-      await db.execute(create2);
     } catch (error) {
-      print("deu erro: $error");
+      print("Erro: $error");
     }
   }
-
-  static const String create = '''
-  CREATE TABLE IF NOT EXISTS $nomeTabela(
-  $id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  $nome       TEXT NOT NULL,
-  $valor      REAL,
-  $quantidade REAL,
-  $pego       INTEGER,
-  $imagem     TEXT,
-  $categoria  TEXT) 
- ''';
-
-  static const String create2 = '''
-  CREATE TABLE IF NOT EXISTS $nomeTabela(
-  $id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  $nome       TEXT NOT NULL,
-  $valor      REAL,
-  $quantidade REAL,
-  $pego       INTEGER,
-  $imagem     TEXT,
-  $categoria  TEXT) 
- ''';
 
 //METODO PARA INSERIR OS DADOS
   Future<int> inserirProduto(ProdutoModel produto) async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem, $categoria) VALUES (?,?,?,?,?,?)
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem, $categoria,$isAtivo) VALUES (?,?,?,?,?,?,?)
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert, [
       capitalize(produto.nome),
@@ -79,7 +69,8 @@ class Produtodao {
       produto.quantidade,
       produto.pego,
       produto.imagem,
-      produto.categoria
+      produto.categoria,
+      produto.isAtivo
     ]); //INSERINDO OS DADOS E ARMAZENANDO O RETORNO EM UMA VARIAVEL O RETORNO É O ID DO PRODUTO
     return resultado;
   }
@@ -87,32 +78,32 @@ class Produtodao {
   Future<int> inserirProdutoPadrao() async {
     final db = await getDataBase(); //ABRIR O BANCO DE DADOS
     const sqlInsert = '''
-    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem, $categoria) VALUES
-('Arroz', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Feijão', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Macarrão', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Óleo de Soja', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Açúcar', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Café', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Leite', 1.00, 6, 0, "assets/icone_app.png","Frios e laticínios"),
-('Farinha de Trigo', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Sal', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Carne Bovina', 1.00, 2, 0, "assets/icone_app.png","Carnes"),
-('Frango', 1.00, 2, 0, "assets/icone_app.png","Carnes"),
-('Ovos', 1.00, 12, 0, "assets/icone_app.png","Mercearia"),
-('Batata', 1.00, 3, 0, "assets/icone_app.png","Hortifrúti"),
-('Tomate', 1.00, 3, 0, "assets/icone_app.png","Hortifrúti"),
-('Cebola', 1.00, 2, 0, "assets/icone_app.png","Hortifrúti"),
-('Alho', 1.00, 1, 0, "assets/icone_app.png","Hortifrúti"),
-('Banana', 1.00, 6, 0, "assets/icone_app.png","Hortifrúti"),
-('Maçã', 1.00, 4, 0, "assets/icone_app.png","Hortifrúti"),
-('Sabonete', 1.00, 3, 0, "assets/icone_app.png","Mercearia"),
-('Detergente', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Papel Higiênico', 1.00, 12, 0, "assets/icone_app.png","Mercearia"),
-('Creme Dental', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Shampoo', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Condicionador', 1.00, 1, 0, "assets/icone_app.png","Mercearia"),
-('Desinfetante', 1.00, 1, 0, "assets/icone_app.png","Mercearia");
+    INSERT INTO $nomeTabela($nome, $valor, $quantidade, $pego, $imagem, $categoria,$isAtivo) VALUES
+('Arroz', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Feijão', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Macarrão', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Óleo de Soja', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Açúcar', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Café', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Leite', 1.00, 6, 0, "assets/icone_app.png","Frios e laticínios",1),
+('Farinha de Trigo', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Sal', 1.00, 1, 0, "assets/icone_app.png","Mercearia",1),
+('Carne Bovina', 1.00, 2, 0, "assets/icone_app.png","Carnes",1),
+('Frango', 1.00, 2, 0, "assets/icone_app.png","Carnes",1),
+('Ovos', 1.00, 12, 0, "assets/icone_app.png","Mercearia",1),
+('Batata', 1.00, 3, 0, "assets/icone_app.png","Hortifrúti",1),
+('Tomate', 1.00, 3, 0, "assets/icone_app.png","Hortifrúti",1),
+('Cebola', 1.00, 2, 0, "assets/icone_app.png","Hortifrúti",1),
+('Alho', 1.00, 1, 0, "assets/icone_app.png","Hortifrúti",1),
+('Banana', 1.00, 6, 0, "assets/icone_app.png","Hortifrúti",1),
+('Maçã', 1.00, 4, 0, "assets/icone_app.png","Hortifrúti",1),
+('Sabonete', 1.00, 3, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Detergente', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Papel Higiênico', 1.00, 12, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Creme Dental', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Shampoo', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Condicionador', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
+('Desinfetante', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1);
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert);
     return resultado;
@@ -122,7 +113,7 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem, $categoria FROM $nomeTabela WHERE $pego = 0 ORDER BY $nome''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem, $categoria, $isAtivo FROM $nomeTabela WHERE $pego = 0 AND $isAtivo = 1 ORDER BY $nome''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
@@ -133,7 +124,18 @@ class Produtodao {
   Future<List<ProdutoModel>> listarTodosProdutosPegos() async {
     final db = await getDataBase(); // abrindo o banco de dados
     const sqlSelect =
-        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem, $categoria FROM $nomeTabela WHERE $pego = 1  ORDER BY $nome ''';
+        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem, $categoria, $isAtivo FROM $nomeTabela WHERE $pego = 1 AND $isAtivo = 1 ORDER BY $nome ''';
+    final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
+    List<ProdutoModel> produtos =
+        resultado.map((map) => ProdutoModel.fromMap(map)).toList();
+    return produtos;
+  }
+
+  //METODO PARA LISTAR TODOS OS DADOS pegos
+  Future<List<ProdutoModel>> listarTodosProdutosDesativados() async {
+    final db = await getDataBase(); // abrindo o banco de dados
+    const sqlSelect =
+        '''SELECT $id, $nome, $valor, $quantidade, $pego, $imagem, $categoria, $isAtivo FROM $nomeTabela WHERE $isAtivo = 0  ORDER BY $nome ''';
     final List<Map<String, dynamic>> resultado = await db.rawQuery(sqlSelect);
     List<ProdutoModel> produtos =
         resultado.map((map) => ProdutoModel.fromMap(map)).toList();
@@ -150,7 +152,8 @@ class Produtodao {
              $quantidade = ?,
              $pego = ?,
              $imagem = ?,
-             $categoria = ?
+             $categoria = ?,
+             $isAtivo = ?
        WHERE $id = ?''';
     final retorno = await db.rawUpdate(sqlUpdate, [
       produto.nome,
@@ -159,6 +162,7 @@ class Produtodao {
       produto.pego,
       produto.imagem,
       produto.categoria,
+      produto.isAtivo,
       produto.id,
     ]);
     return retorno;
@@ -173,6 +177,32 @@ class Produtodao {
        WHERE $id = ?''';
     final retorno = await db.rawUpdate(sqlUpdate, [
       produto.id,
+    ]);
+    return retorno;
+  }
+
+//METODO PARA ATUALIZAR O PRODUTO. onde altero apenas o Ativo
+  Future<int> ativarProduto(ProdutoModel produto) async {
+    final db = await getDataBase();
+    const sqlUpdate = '''
+      UPDATE $nomeTabela 
+         SET $isAtivo = 1
+       WHERE $id = ?''';
+    final retorno = await db.rawUpdate(sqlUpdate, [
+      produto.id,
+    ]);
+    return retorno;
+  }
+
+  //METODO PARA ATUALIZAR O PRODUTO. onde altero apenas o Ativo
+  Future<int> desativarProduto(int id) async {
+    final db = await getDataBase();
+    String sqlUpdate = '''
+      UPDATE $nomeTabela 
+         SET $isAtivo = 0
+       WHERE id = ?''';
+    final retorno = await db.rawUpdate(sqlUpdate, [
+      id,
     ]);
     return retorno;
   }

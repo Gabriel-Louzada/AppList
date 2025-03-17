@@ -6,12 +6,14 @@ class ProdutoProvider extends ChangeNotifier {
   //_Produto sera responsavel por produtos em que o ativo esta igual a false
   List<ProdutoModel> _produtos = [];
   List<ProdutoModel> _produtosPegos = [];
+  List<ProdutoModel> _produtosDesativados = [];
 
   //SEMPRE QUE O CHECKBOX FOR SELECIONADO, EU IREI ADICIONAR UM PRODUTO A LISTA
   final List<ProdutoModel> _produtosSelecionados = [];
 
   List<ProdutoModel> get produtos => _produtos;
   List<ProdutoModel> get produtosPegos => _produtosPegos;
+  List<ProdutoModel> get produtosDesativados => _produtosDesativados;
   List<ProdutoModel> get produtosSelecionados => _produtosSelecionados;
 
   //CARREGAR TODOS OS PRODUTOS
@@ -22,6 +24,11 @@ class ProdutoProvider extends ChangeNotifier {
 
   Future<void> carregarProdutosPegos() async {
     _produtosPegos = await Produtodao().listarTodosProdutosPegos();
+    notifyListeners();
+  }
+
+  Future<void> carregarProdutosDesativados() async {
+    _produtosDesativados = await Produtodao().listarTodosProdutosDesativados();
     notifyListeners();
   }
 
@@ -63,6 +70,17 @@ class ProdutoProvider extends ChangeNotifier {
     carregarProdutos();
   }
 
+  Future<void> desativarSelecionados() async {
+    for (var produto in produtosSelecionados) {
+      if (produto.isChecked) {
+        await Produtodao().desativarProduto(produto.id!);
+      }
+    }
+    produtosSelecionados.clear();
+    resetarSelecao();
+    carregarProdutos();
+  }
+
 //GARANTO QUE TODOS OS PRODUTOS FIQUEM COM O CHECKBOX DESMARCADO
   void resetarSelecao() {
     for (var produto in _produtos) {
@@ -85,6 +103,7 @@ class ProdutoProvider extends ChangeNotifier {
   Future<void> alterarProduto(ProdutoModel produto) async {
     await Produtodao().alterarProduto(produto);
     carregarProdutos();
+    carregarProdutosDesativados();
     carregarProdutosPegos();
   }
 
@@ -106,12 +125,15 @@ class ProdutoProvider extends ChangeNotifier {
   Future<void> removerProduto(int id) async {
     await Produtodao().removerProduto(id);
     carregarProdutos();
+    carregarProdutosDesativados();
     carregarProdutosPegos();
   }
 
   double somarQuantidadeCarrinho() {
     double quantidadeTotal = 0;
     for (var produto in produtosPegos) {
+      print("********************");
+      print(produto);
       quantidadeTotal += produto.quantidade;
     }
     return quantidadeTotal;
@@ -120,6 +142,8 @@ class ProdutoProvider extends ChangeNotifier {
   double somarValoresCarrinho() {
     double valorTotal = 0;
     for (var produto in produtosPegos) {
+      print("********************");
+      print(produto);
       valorTotal += (produto.valor * produto.quantidade);
     }
     return valorTotal;
@@ -153,5 +177,12 @@ class ProdutoProvider extends ChangeNotifier {
     await Produtodao().voltarListaTodos();
     carregarProdutos();
     carregarProdutosPegos();
+  }
+
+  ativarProduto(ProdutoModel produto) async {
+    await Produtodao().ativarProduto(produto);
+    carregarProdutos();
+    carregarProdutosPegos();
+    carregarProdutosDesativados();
   }
 }

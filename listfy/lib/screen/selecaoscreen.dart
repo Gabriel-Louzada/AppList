@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/components/produtoSelecao.dart';
 import 'package:listfy/data/provider.dart';
+import 'package:listfy/models/produtoModels.dart';
 import 'package:provider/provider.dart';
 
 class SelecaoScreen extends StatefulWidget {
@@ -33,14 +34,42 @@ class _SelecaoScreenState extends State<SelecaoScreen> {
       ),
       body: Consumer<ProdutoProvider>(
         builder: (context, provider, child) {
+          final Map<String, List<ProdutoModel>> produtosPorCategoria = {};
+
+          for (var produto in provider.produtos) {
+            if (!produtosPorCategoria.containsKey(produto.categoria)) {
+              produtosPorCategoria[produto.categoria!] = [];
+            }
+            produtosPorCategoria[produto.categoria]!.add(produto);
+          }
+
+          // Lista de categorias (chaves do mapa)
+          final categorias = produtosPorCategoria.keys.toList();
+
           return ListView.builder(
-            itemCount: provider.produtos.length + 1,
+            itemCount: categorias.length + 1,
             itemBuilder: (context, index) {
-              if (index == provider.produtos.length) {
+              if (index == categorias.length) {
                 return const SizedBox(height: 80);
               } else {
-                final produtoProvider = provider.produtos[index];
-                return ProdutoSelecao(produto: produtoProvider);
+                final categoria = categorias[index];
+                final produtos = produtosPorCategoria[categoria]!;
+                return ExpansionTile(
+                  maintainState: true,
+                  childrenPadding: const EdgeInsets.only(bottom: 20),
+                  collapsedBackgroundColor:
+                      Colors.transparent, // Remove a aparência do fundo
+                  backgroundColor:
+                      Colors.transparent, // Define o fundo como transparente
+                  title: Text(
+                    categoria,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 20),
+                  ),
+                  children: produtos.map((produto) {
+                    return ProdutoSelecao(produto: produto);
+                  }).toList(),
+                );
               }
             },
           );
@@ -54,23 +83,25 @@ class _SelecaoScreenState extends State<SelecaoScreen> {
                 return AlertDialog(
                   title: const Text("Atenção!"),
                   content: const Text(
-                      "Deseja realmente remover todos os produtos selecionados?"),
+                      "Deseja desativar ou remover todos os produtos. Para abortar pressione fora da caixa "),
                   actions: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          "Cancelar",
-                          style: TextStyle(color: Colors.red),
-                        )),
                     ElevatedButton(
                         onPressed: () {
                           Provider.of<ProdutoProvider>(context, listen: false)
                               .removerSelecionados();
                           Navigator.pop(context);
                         },
-                        child: const Text("Confirmar"))
+                        child: const Text(
+                          "Remover",
+                          style: TextStyle(color: Colors.red),
+                        )),
+                    ElevatedButton(
+                        onPressed: () {
+                          Provider.of<ProdutoProvider>(context, listen: false)
+                              .desativarSelecionados();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Desativar")),
                   ],
                 );
               });

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
-import 'package:listfy/screen/somadores.dart';
+import 'package:listfy/screen/TelaDeProdutosDesativados.dart';
+// import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
 class MeuDrawer extends StatelessWidget {
@@ -37,15 +39,27 @@ class MeuDrawer extends StatelessWidget {
               ],
             ),
           ),
+          // ListTile(
+          //   leading: const Icon(Icons.monetization_on),
+          //   title: const Text('Totalizadores'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (contextNew) => const Somadores()));
+          //   },
+          // ),
           ListTile(
-            leading: const Icon(Icons.monetization_on),
-            title: const Text('Totalizadores'),
+            leading: const Icon(Icons.block),
+            title: const Text('Produtos Desativados'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (contextNew) => const Somadores()));
+                      builder: (contextNew) =>
+                          const TelaDeProdutosDesativados()));
             },
           ),
           ListTile(
@@ -112,6 +126,30 @@ class MeuDrawer extends StatelessWidget {
                       ],
                     );
                   });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.browser_updated),
+            title: const Text('Atualizar sistema'),
+            onTap: () async {
+              Navigator.pop(context);
+              try {
+                await Produtodao().adicionarColunaImagem();
+                await Produtodao().adicionarColunaCategoria();
+                await Produtodao().adicionarColunaIsAtivo();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Sistema atualizado com sucesso !'),
+                  ),
+                );
+              } catch (error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Não foi possivel atualizar o sistema Error: $error'),
+                  ),
+                );
+              }
             },
           ),
           // ListTile(
