@@ -97,13 +97,13 @@ class Produtodao {
 ('Alho', 1.00, 1, 0, "assets/icone_app.png","Hortifrúti",1),
 ('Banana', 1.00, 6, 0, "assets/icone_app.png","Hortifrúti",1),
 ('Maçã', 1.00, 4, 0, "assets/icone_app.png","Hortifrúti",1),
-('Sabonete', 1.00, 3, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Detergente', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Papel Higiênico', 1.00, 12, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Creme Dental', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Shampoo', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Condicionador', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1),
-('Desinfetante', 1.00, 1, 0, "assets/icone_app.png","Limpesa e Higiene Pessoal",1);
+('Sabonete', 1.00, 3, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Detergente', 1.00, 1, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Papel Higiênico', 1.00, 12, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Creme Dental', 1.00, 1, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Shampoo', 1.00, 1, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Condicionador', 1.00, 1, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1),
+('Desinfetante', 1.00, 1, 0, "assets/icone_app.png","Limpeza e Higiene Pessoal",1);
      '''; // SQL BRUTO PARA INSERÇÃO DE DADOS
     final resultado = await db.rawInsert(sqlInsert);
     return resultado;

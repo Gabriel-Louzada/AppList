@@ -134,8 +134,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           value: 'Frios e laticínios',
                           child: Text('Frios e laticínios')),
                       DropdownMenuItem(
-                          value: 'Limpesa e Higiene Pessoal',
-                          child: Text('Limpesa e Higiene Pessoal')),
+                          value: 'Limpeza e Higiene Pessoal',
+                          child: Text('Limpeza e Higiene Pessoal')),
                       DropdownMenuItem(value: 'Geral', child: Text('Geral')),
                     ],
                     onChanged: (String? novoValor) {
