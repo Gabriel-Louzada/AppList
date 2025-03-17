@@ -331,11 +331,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
                                       onPressed: () {
                                         try {
                                           Produtodao().adicionarColunaImagem();
+                                          Produtodao()
+                                              .adicionarColunaCategoria();
                                         } catch (error) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Error ao criar a coluna imagem: $error")));
+                                                  content:
+                                                      Text("Error: $error")));
                                         }
                                         Navigator.pop(context);
                                       },
