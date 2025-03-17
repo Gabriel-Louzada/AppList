@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:listfy/components/drawer.dart';
 import 'package:listfy/components/opcoesProdutos.dart';
 import 'package:listfy/components/produto.dart';
-import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:listfy/screen/TelaDeProdutosPegos.dart';
@@ -16,8 +15,6 @@ class PrimeiraTela extends StatefulWidget {
 }
 
 class _PrimeiraTelaState extends State<PrimeiraTela> {
-  final Produtodao produtodao = Produtodao();
-  List<ProdutoModel> produtos = [];
   bool isChecked = false; //ESTADO INICIAL DO CHECKBOX
 
   @override
@@ -43,14 +40,43 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
       drawer: const MeuDrawer(),
       body: Consumer<ProdutoProvider>(
         builder: (context, provider, child) {
+          // Agrupar os produtos pela categoria
+          final Map<String, List<ProdutoModel>> produtosPorCategoria = {};
+
+          for (var produto in provider.produtos) {
+            if (!produtosPorCategoria.containsKey(produto.categoria)) {
+              produtosPorCategoria[produto.categoria!] = [];
+            }
+            produtosPorCategoria[produto.categoria]!.add(produto);
+          }
+
+          // Lista de categorias (chaves do mapa)
+          final categorias = produtosPorCategoria.keys.toList();
+
           return ListView.builder(
-            itemCount: provider.produtos.length + 1,
+            itemCount: categorias.length + 1,
             itemBuilder: (context, index) {
-              if (index == provider.produtos.length) {
+              if (index == categorias.length) {
                 return const SizedBox(height: 80);
               } else {
-                final produtoProvider = provider.produtos[index];
-                return Produto(produto: produtoProvider);
+                final categoria = categorias[index];
+                final produtos = produtosPorCategoria[categoria]!;
+                return ExpansionTile(
+                  maintainState: true,
+                  childrenPadding: const EdgeInsets.only(bottom: 20),
+                  collapsedBackgroundColor:
+                      Colors.transparent, // Remove a aparência do fundo
+                  backgroundColor:
+                      Colors.transparent, // Define o fundo como transparente
+                  title: Text(
+                    categoria,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 20),
+                  ),
+                  children: produtos.map((produto) {
+                    return Produto(produto: produto);
+                  }).toList(),
+                );
               }
             },
           );

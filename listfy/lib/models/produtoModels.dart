@@ -6,6 +6,7 @@ class ProdutoModel {
   final int? pego;
   bool isChecked = false; // esse cara tem a ver com a seleção de produtos
   String? imagem;
+  String? categoria;
 
   ProdutoModel(
       {this.id,
@@ -13,7 +14,8 @@ class ProdutoModel {
       required this.valor,
       required this.quantidade,
       this.pego,
-      this.imagem});
+      this.imagem,
+      required this.categoria});
 
 //CONVERTE OS PRODUTOS EM UM MAP DE PRODUTOS
   Map<String, dynamic> toMap() {
@@ -23,7 +25,8 @@ class ProdutoModel {
       'valor': valor,
       'quantidade': quantidade,
       'pego': pego,
-      'imagem': imagem
+      'imagem': imagem,
+      'categoria': categoria
     };
   }
 
@@ -36,12 +39,13 @@ class ProdutoModel {
       quantidade: map['quantidade'],
       pego: map['pego'],
       imagem: map['imagem'],
+      categoria: map['categoria'],
     );
   }
 
 //CONVERTE OS PRODUTOS EM UMA STRING
   @override
   String toString() {
-    return 'ProdutoModel(id: $id, nome: $nome, valor: $valor, quantidade: $quantidade, pego: $pego, isChecked: $isChecked, imagem: $imagem)';
+    return 'ProdutoModel(id: $id, nome: $nome, valor: $valor, quantidade: $quantidade, pego: $pego, isChecked: $isChecked, imagem: $imagem, categoria: $categoria: )';
   }
 }

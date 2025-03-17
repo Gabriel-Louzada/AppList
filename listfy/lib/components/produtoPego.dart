@@ -98,6 +98,7 @@ class _ProdutoState extends State<ProdutoPego> {
                                   nome: widget.produto.nome,
                                   valor: widget.produto.valor,
                                   quantidade: widget.produto.quantidade,
+                                  categoria: widget.produto.categoria,
                                 );
                                 await Provider.of<ProdutoProvider>(context,
                                         listen: false)

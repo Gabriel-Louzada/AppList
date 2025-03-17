@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:listfy/dao/ProdutoDao.dart';
 import 'package:listfy/data/provider.dart';
 import 'package:listfy/models/produtoModels.dart';
 import 'package:listfy/util/uteis.dart';
@@ -19,6 +20,7 @@ class TelaCadastro extends StatefulWidget {
 class _TelaCadastroState extends State<TelaCadastro> {
   final imagePicker = ImagePicker();
   File? imageFile;
+  String? _opcaoSelecionada;
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _valorController = TextEditingController();
   final TextEditingController _quantidadeController = TextEditingController();
@@ -115,6 +117,38 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: "Selecione a Categoria",
+                      border: OutlineInputBorder(),
+                    ),
+                    value: _opcaoSelecionada,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Mercearia', child: Text('Mercearia')),
+                      DropdownMenuItem(
+                          value: 'Hortifrúti', child: Text('Hortifrúti')),
+                      DropdownMenuItem(value: 'Carnes', child: Text('Carnes')),
+                      DropdownMenuItem(
+                          value: 'Frios e laticínios',
+                          child: Text('Frios e laticínios')),
+                      DropdownMenuItem(value: 'Geral', child: Text('Geral')),
+                    ],
+                    onChanged: (String? novoValor) {
+                      setState(() {
+                        _opcaoSelecionada = novoValor;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, selecione uma opção';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 22,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
@@ -249,39 +283,68 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
-                        final nome = _nomeController.text.trim();
-                        final valor = _valorController.text.trim();
-                        final quantidade = _quantidadeController.text.trim();
-                        final File imagem = imageFile != null
-                            ? File(imageFile!.path)
-                            : File("assets/icone_app.png");
+                        try {
+                          //pegando os valores do textField e aplicando uma formatação tirando espaços em branco
+                          final nome = _nomeController.text.trim();
+                          final valor = _valorController.text.trim();
+                          final quantidade = _quantidadeController.text.trim();
+                          final File imagem = imageFile != null
+                              ? File(imageFile!.path)
+                              : File("assets/icone_app.png");
 
-                        final ProdutoModel produto = ProdutoModel(
-                            nome: nome,
-                            valor: double.parse(valor),
-                            quantidade: double.parse(quantidade),
-                            pego: validaPego(isPego),
-                            imagem: imagem.path.toString());
+                          final ProdutoModel produto = ProdutoModel(
+                              nome: nome,
+                              valor: double.parse(valor),
+                              quantidade: double.parse(quantidade),
+                              pego: validaPego(isPego),
+                              imagem: imagem.path.toString(),
+                              categoria: _opcaoSelecionada!);
 
-                        await Provider.of<ProdutoProvider>(context,
-                                listen: false)
-                            .adicionarProduto(produto);
+                          await Provider.of<ProdutoProvider>(context,
+                                  listen: false)
+                              .adicionarProduto(produto);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Produto adicionado a lista com sucesso'),
-                          ),
-                        );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'Produto adicionado a lista com sucesso'),
+                            ),
+                          );
 
-                        //LIMPANDO OS CAMPOS
-                        _nomeController.clear();
-                        _valorController.clear();
-                        _quantidadeController.clear();
-                        setState(() {
-                          imageFile = null;
-                        });
+                          //LIMPANDO OS CAMPOS
+                          _nomeController.clear();
+                          _valorController.clear();
+                          _quantidadeController.clear();
+                          setState(() {
+                            imageFile = null;
+                          });
+                        } catch (error) {
+                          return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Atenção!"),
+                                content:
+                                    Text("Erro ao adicionar o produto: $error"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        try {
+                                          Produtodao().adicionarColunaImagem();
+                                        } catch (error) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Error ao criar a coluna imagem: $error")));
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Fechar"))
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
                     },
                     child: const Text(

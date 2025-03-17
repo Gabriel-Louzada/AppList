@@ -23,6 +23,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
   late bool isPego;
   File? imagem;
   File? novaImagem;
+  String? _opcaoSelecionada;
   final File imagemPadrao = File("assets/icone_app.png");
   TextEditingController _nomeController = TextEditingController();
   TextEditingController _valorController = TextEditingController();
@@ -125,6 +126,38 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                   ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: "Selecione a Categoria",
+                      border: OutlineInputBorder(),
+                    ),
+                    value: _opcaoSelecionada,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Mercearia', child: Text('Mercearia')),
+                      DropdownMenuItem(
+                          value: 'Hortifrúti', child: Text('Hortifrúti')),
+                      DropdownMenuItem(value: 'Carnes', child: Text('Carnes')),
+                      DropdownMenuItem(
+                          value: 'Frios e laticínios',
+                          child: Text('Frios e laticínios')),
+                      DropdownMenuItem(value: 'Geral', child: Text('Geral')),
+                    ],
+                    onChanged: (String? novoValor) {
+                      setState(() {
+                        _opcaoSelecionada = novoValor;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, selecione uma opção';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 22,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
@@ -310,6 +343,7 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                           final nome = _nomeController.text.trim();
                           final valor = _valorController.text.trim();
                           final quantidade = _quantidadeController.text.trim();
+                          final categoria = _opcaoSelecionada;
 
                           final ProdutoModel produto = ProdutoModel(
                               id: id,
@@ -319,7 +353,8 @@ class _AlterarProdutoState extends State<AlterarProduto> {
                               pego: validaPego(isPego),
                               imagem: novaImagem == null
                                   ? imagem!.path
-                                  : novaImagem!.path);
+                                  : novaImagem!.path,
+                              categoria: categoria);
 
                           await Provider.of<ProdutoProvider>(context,
                                   listen: false)

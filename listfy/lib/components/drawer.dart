@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:listfy/data/provider.dart';
-import 'package:listfy/screen/primeiraTela.dart';
-// import 'package:listfy/screen/TelaDeProdutosPegos.dart';
 import 'package:listfy/screen/somadores.dart';
 import 'package:provider/provider.dart';
 
@@ -40,28 +38,6 @@ class MeuDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Lista de Compras'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (contextNew) => const PrimeiraTela()));
-            },
-          ),
-          // ListTile(
-          //   leading: const Icon(Icons.shopping_cart_outlined),
-          //   title: const Text('Carrinho'),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (contextNew) => const TelaDeProdutosPegos()));
-          //   },
-          // ),
-          ListTile(
             leading: const Icon(Icons.monetization_on),
             title: const Text('Totalizadores'),
             onTap: () {
@@ -86,19 +62,53 @@ class MeuDrawer extends StatelessWidget {
                           "Essa função é utilzada para ganhar tempo no cadastro da lista"),
                       actions: [
                         ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Cancelar",
-                                style: TextStyle(color: Colors.red))),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "Cancelar",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
                         ElevatedButton(
                             onPressed: () async {
-                              await Provider.of<ProdutoProvider>(context,
-                                      listen: false)
-                                  .adicionarProdutopadrao();
-                              Navigator.pop(context);
+                              try {
+                                await Provider.of<ProdutoProvider>(context,
+                                        listen: false)
+                                    .adicionarProdutopadrao();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        "Produtos cadastrados com sucesso"),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              } catch (error) {
+                                return showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Atenção!"),
+                                      content: ListView(
+                                        children: [
+                                          Text(
+                                              "Não foi possivel cadastrar os produtos: Erro $error"),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Fechar"))
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
-                            child: const Text("Add Lista"))
+                            child: const Text("Confirmar"))
                       ],
                     );
                   });
@@ -106,18 +116,32 @@ class MeuDrawer extends StatelessWidget {
           ),
           // ListTile(
           //   leading: const Icon(Icons.settings),
-          //   title: const Text('Configurações'),
-          //   onTap: () {
-          //     Navigator.pop(context); // Fecha o Drawer
+          //   title: const Text("Ajuste db"),
+          //   onTap: () async {
+          //     try {
+          //       Produtodao().adicionarColunaImagem();
+          //       ScaffoldMessenger.of(context).showSnackBar(
+          //           const SnackBar(content: Text("Tabela criada com sucesso")));
+          //     } catch (error) {
+          //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //           content: Text("Error ao criar a coluna imagem: $error")));
+          //     }
           //   },
           // ),
           // ListTile(
-          //   leading: const Icon(Icons.info),
-          //   title: const Text('Sobre'),
-          //   onTap: () {
-          //     Navigator.pop(context); // Fecha o Drawer
+          //   leading: const Icon(Icons.settings),
+          //   title: const Text("remover db"),
+          //   onTap: () async {
+          //     try {
+          //       Produtodao().removerbd();
+          //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          //           content: Text("Banco recriado com sucesso. ")));
+          //     } catch (error) {
+          //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //           content: Text("Error ao criar a coluna imagem: $error")));
+          //     }
           //   },
-          // ),
+          // )
         ],
       ),
     );

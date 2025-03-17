@@ -101,6 +101,7 @@ class _ProdutoState extends State<Produto> {
                                 nome: widget.produto.nome,
                                 valor: widget.produto.valor,
                                 quantidade: widget.produto.quantidade,
+                                categoria: widget.produto.categoria,
                               );
                               meuDialog(context, produto);
                             },
@@ -243,6 +244,7 @@ class _ProdutoState extends State<Produto> {
                     final valor = valorController.text.trim();
                     final quantidade = quantidadeController.text.trim();
                     final File imagem = File(widget.produto.imagem!);
+                    final categoria = produto.categoria;
 
                     final ProdutoModel produtoAlterado = ProdutoModel(
                       id: id,
@@ -250,6 +252,7 @@ class _ProdutoState extends State<Produto> {
                       valor: double.parse(valor),
                       quantidade: double.parse(quantidade),
                       imagem: imagem.path.toString(),
+                      categoria: categoria,
                     );
                     //ALTERO O PRODUTO
                     await Provider.of<ProdutoProvider>(context, listen: false)
